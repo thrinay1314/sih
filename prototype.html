@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FasalSetu — Sell smarter, not just higher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#3E2B1F;
+    --leaf:#1F5E3D;
+    --leaf-light:#2E7D4F;
+    --wheat:#E4A72E;
+    --wheat-deep:#C4841E;
+    --sky:#3A7CA5;
+    --paper:#F7F2E9;
+    --paper-warm:#EFE6D3;
+    --ink:#2A1F16;
+    --ink-soft:#6B5A47;
+    --line:#DCCBA8;
+    --white:#FFFDF9;
+    --danger:#B5462F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Hanken Grotesk', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--soil);
+    margin:0;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+  .hidden{display:none !important;}
+
+  /* ================= LOGIN SCREEN ================= */
+  #loginScreen{
+    min-height:100vh;
+    background:var(--leaf);
+    background-image:
+      radial-gradient(circle at 10% 15%, rgba(255,255,255,0.07) 0, transparent 45%),
+      radial-gradient(circle at 92% 85%, rgba(255,255,255,0.06) 0, transparent 42%);
+    display:flex; align-items:center; justify-content:center; padding:32px 16px;
+  }
+  .login-card{
+    background:var(--white); border-radius:20px; max-width:440px; width:100%;
+    padding:34px 30px 30px; box-shadow:0 30px 60px -25px rgba(0,0,0,0.45);
+  }
+  .login-brand{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .login-brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:1.4rem; color:var(--soil);}
+  .login-brand-sub{font-size:0.8rem; color:var(--ink-soft); margin-top:1px;}
+  .role-tabs{ display:flex; gap:6px; background:var(--paper-warm); padding:4px; border-radius:12px; margin-bottom:22px;}
+  .role-tabs button{
+    flex:1; border:none; background:transparent; padding:10px 6px; border-radius:9px;
+    font-family:inherit; font-weight:700; font-size:0.85rem; color:var(--ink-soft); cursor:pointer;
+  }
+  .role-tabs button.active{ background:var(--leaf); color:var(--white); }
+  .login-field{ margin-bottom:14px; }
+  .login-field label{ display:block; font-size:0.8rem; font-weight:700; color:var(--ink-soft); margin-bottom:6px;}
+  .login-field input{
+    width:100%; padding:12px 13px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-warm); font-family:inherit; font-size:1rem; color:var(--ink);
+  }
+  .login-field input:focus{ outline:none; border-color:var(--leaf-light); background:var(--white); }
+  .role-desc{
+    font-size:0.82rem; color:var(--ink-soft); background:var(--paper-warm);
+    border-radius:10px; padding:10px 12px; margin-bottom:18px; line-height:1.45;
+  }
+  .btn-login{
+    width:100%; background:var(--wheat-deep); color:var(--white); border:none; padding:13px;
+    border-radius:11px; font-family:inherit; font-weight:700; font-size:1rem; cursor:pointer;
+    box-shadow:0 8px 18px -8px rgba(196,132,30,0.6);
+  }
+  .btn-login:hover{ background:#AD7419; }
+  .login-note{ margin-top:14px; font-size:0.76rem; color:var(--ink-soft); text-align:center; }
+
+  /* ================= SHARED TOP BAR ================= */
+  header.top{
+    background:var(--leaf);
+    background-image:
+      radial-gradient(circle at 12% 20%, rgba(255,255,255,0.06) 0, transparent 45%),
+      radial-gradient(circle at 90% 80%, rgba(255,255,255,0.05) 0, transparent 40%);
+    color:var(--white);
+    padding:26px 0 36px;
+  }
+  .top-row{display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand svg{flex-shrink:0;}
+  .brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:1.4rem; letter-spacing:0.2px;}
+  .brand-sub{font-size:0.76rem; color:#CFE8DA; margin-top:1px;}
+  .top-right{ display:flex; align-items:center; gap:12px; }
+  .role-pill{
+    background:rgba(255,255,255,0.14); color:var(--white); font-size:0.78rem; font-weight:700;
+    padding:7px 14px; border-radius:999px;
+  }
+  .btn-logout{
+    background:transparent; border:1.5px solid rgba(255,255,255,0.4); color:var(--white);
+    font-family:inherit; font-size:0.8rem; font-weight:700; padding:7px 14px; border-radius:999px; cursor:pointer;
+  }
+  .btn-logout:hover{ background:rgba(255,255,255,0.14); }
+  .hero-line{
+    margin-top:26px; font-family:'Fraunces', serif; font-weight:500;
+    font-size:clamp(1.5rem, 3.6vw, 2.3rem); max-width:640px; color:var(--white); line-height:1.18;
+  }
+  .hero-sub{margin-top:10px; color:#D8ECDF; font-size:1rem; max-width:560px;}
+
+  /* ================= FARMER: FORM CARD ================= */
+  .form-card{
+    background:var(--white); border:1px solid var(--line); border-radius:18px;
+    margin-top:-40px; padding:26px 26px 22px; box-shadow:0 18px 40px -20px rgba(62,43,31,0.35);
+    position:relative;
+  }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; margin-top:18px; }
+  @media(max-width:620px){ .form-grid{grid-template-columns:1fr;} }
+  .field label{ display:block; font-size:0.82rem; font-weight:700; color:var(--ink-soft); margin-bottom:6px; }
+  .field select, .field input{
+    width:100%; padding:12px 13px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-warm); font-family:inherit; font-size:1rem; color:var(--ink); appearance:none;
+  }
+  .field select:focus, .field input:focus{ outline:none; border-color:var(--leaf-light); background:var(--white); }
+  .qty-row{display:flex; gap:8px;}
+  .qty-row input{flex:1;}
+  .qty-row select{width:92px; flex-shrink:0;}
+  .quality-pills{display:flex; gap:8px;}
+  .quality-pills button{
+    flex:1; padding:11px 6px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-warm); font-family:inherit; font-weight:700; font-size:0.9rem;
+    cursor:pointer; color:var(--ink-soft);
+  }
+  .quality-pills button.sel{ background:var(--leaf); border-color:var(--leaf); color:var(--white); }
+  .submit-row{ margin-top:22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .btn-primary{
+    background:var(--wheat-deep); color:var(--white); border:none; padding:14px 26px;
+    border-radius:11px; font-family:inherit; font-weight:700; font-size:1rem; cursor:pointer;
+    box-shadow:0 8px 18px -8px rgba(196,132,30,0.6);
+  }
+  .btn-primary:hover{background:#AD7419;}
+  .hint{font-size:0.85rem; color:var(--ink-soft);}
+
+  /* ================= RESULTS (farmer) ================= */
+  .results{ margin-top:38px; padding-bottom:60px; display:none; }
+  .results.show{display:block;}
+  .results-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .results-head h2{ font-size:1.4rem; font-weight:600; }
+  .results-sub{color:var(--ink-soft); font-size:0.92rem; max-width:520px;}
+  .sort-note{
+    font-size:0.8rem; color:var(--ink-soft); background:var(--paper-warm);
+    border:1px solid var(--line); padding:6px 12px; border-radius:999px; white-space:nowrap;
+  }
+  .card{
+    background:var(--white); border:1.5px solid var(--line); border-radius:16px;
+    margin-top:16px; padding:20px 20px 18px; position:relative; overflow:hidden;
+  }
+  .card.best{ border-color:var(--leaf); box-shadow:0 14px 30px -20px rgba(31,94,61,0.5); }
+  .best-tag{
+    position:absolute; top:0; right:0; background:var(--leaf); color:var(--white);
+    font-size:0.72rem; font-weight:700; padding:6px 14px; border-radius:0 0 0 12px; letter-spacing:0.3px;
+  }
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;}
+  .buyer-name{font-family:'Fraunces', serif; font-size:1.15rem; font-weight:600; color:var(--soil);}
+  .buyer-meta{ font-size:0.85rem; color:var(--ink-soft); margin-top:3px; display:flex; gap:10px; flex-wrap:wrap;}
+  .type-tag{ font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:6px; letter-spacing:0.2px; }
+  .type-mandi{ background:#E8EFE4; color:var(--leaf); }
+  .type-fpo{ background:#E7EEF3; color:var(--sky); }
+  .type-private{ background:#F3E9D7; color:var(--wheat-deep); }
+  .net-block{ text-align:right; }
+  .net-label{ font-size:0.72rem; color:var(--ink-soft); font-weight:700; }
+  .net-value{ font-family:'Fraunces', serif; font-size:1.55rem; font-weight:700; color:var(--leaf); }
+  .breakdown{
+    margin-top:16px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+    border-top:1px dashed var(--line); padding-top:14px;
+  }
+  @media(max-width:620px){ .breakdown{grid-template-columns:repeat(2,1fr);} }
+  .bd-item .bd-label{font-size:0.72rem; color:var(--ink-soft); font-weight:600;}
+  .bd-item .bd-value{font-size:0.96rem; font-weight:700; margin-top:2px;}
+  .bd-value.minus{color:var(--danger);}
+  .card-foot{ margin-top:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .freshness{ font-size:0.78rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;}
+  .freshness .dot{ width:7px; height:7px; border-radius:50%; background:var(--leaf-light); display:inline-block;}
+  .btn-contact{
+    background:var(--white); border:1.5px solid var(--leaf); color:var(--leaf); font-family:inherit;
+    font-weight:700; font-size:0.88rem; padding:9px 16px; border-radius:9px; cursor:pointer;
+  }
+  .btn-contact:hover{ background:var(--leaf); color:var(--white); }
+  .method-note{
+    margin-top:26px; background:var(--paper-warm); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; font-size:0.86rem; color:var(--ink-soft);
+  }
+  .method-note b{color:var(--ink);}
+
+  /* ================= BUYER DASHBOARD ================= */
+  .dash-wrap{ padding:30px 0 60px; }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:-40px; }
+  @media(max-width:620px){ .stat-row{grid-template-columns:1fr;} }
+  .stat-card{
+    background:var(--white); border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+    box-shadow:0 14px 30px -22px rgba(62,43,31,0.35);
+  }
+  .stat-num{ font-family:'Fraunces', serif; font-size:1.7rem; font-weight:700; color:var(--soil); }
+  .stat-label{ font-size:0.8rem; color:var(--ink-soft); margin-top:2px; }
+  .section-title{ font-size:1.2rem; font-weight:600; margin-top:34px; margin-bottom:4px; }
+  .section-sub{ font-size:0.9rem; color:var(--ink-soft); margin-bottom:14px; }
+  .listing-row{
+    background:var(--white); border:1.5px solid var(--line); border-radius:14px; padding:16px 18px;
+    display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:12px; flex-wrap:wrap;
+  }
+  .listing-left{ display:flex; gap:14px; align-items:center; }
+  .crop-badge{
+    width:46px; height:46px; border-radius:12px; background:var(--paper-warm);
+    display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;
+  }
+  .listing-title{ font-weight:700; color:var(--soil); }
+  .listing-meta{ font-size:0.82rem; color:var(--ink-soft); margin-top:2px; }
+  .listing-right{ display:flex; align-items:center; gap:10px; }
+  .price-ask{ font-family:'Fraunces', serif; font-weight:700; font-size:1.1rem; color:var(--leaf); }
+  .btn-small{
+    background:var(--leaf); color:var(--white); border:none; padding:9px 15px; border-radius:9px;
+    font-family:inherit; font-weight:700; font-size:0.84rem; cursor:pointer;
+  }
+  .btn-small:hover{ background:var(--leaf-light); }
+
+  /* ================= ADMIN DASHBOARD ================= */
+  .admin-table{
+    width:100%; border-collapse:collapse; background:var(--white); border:1px solid var(--line);
+    border-radius:14px; overflow:hidden; margin-top:12px;
+  }
+  .admin-table th{
+    background:var(--paper-warm); text-align:left; font-size:0.76rem; font-weight:700; color:var(--ink-soft);
+    padding:11px 14px; letter-spacing:0.2px;
+  }
+  .admin-table td{ padding:12px 14px; font-size:0.88rem; border-top:1px solid var(--line); }
+  .status-pill{ font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
+  .status-ok{ background:#E8EFE4; color:var(--leaf); }
+  .status-flag{ background:#F7E3DC; color:var(--danger); }
+  .status-pending{ background:#F3E9D7; color:var(--wheat-deep); }
+  .admin-actions button{
+    border:1.5px solid var(--line); background:var(--white); color:var(--ink-soft); font-family:inherit;
+    font-size:0.78rem; font-weight:700; padding:5px 10px; border-radius:7px; cursor:pointer; margin-right:6px;
+  }
+  .admin-actions button:hover{ border-color:var(--leaf); color:var(--leaf); }
+
+  /* toast */
+  #toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--soil); color:var(--white); padding:13px 22px; border-radius:11px;
+    font-size:0.92rem; opacity:0; pointer-events:none; transition:all .28s ease; z-index:50;
+    box-shadow:0 12px 28px -10px rgba(0,0,0,0.4); max-width:88vw; text-align:center;
+  }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  footer{ text-align:center; padding:26px 20px 40px; font-size:0.8rem; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
+        <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+        <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+      </svg>
+      <div>
+        <div class="login-brand-name">FasalSetu</div>
+        <div class="login-brand-sub">Market linkage &amp; price discovery</div>
+      </div>
+    </div>
+
+    <div class="role-tabs">
+      <button class="active" data-role="farmer" onclick="selectRole('farmer')">Farmer</button>
+      <button data-role="buyer" onclick="selectRole('buyer')">Buyer</button>
+      <button data-role="admin" onclick="selectRole('admin')">Administrator</button>
+    </div>
+
+    <div class="role-desc" id="roleDesc">Log in to enter your crop details and compare buyers and markets near you.</div>
+
+    <div class="login-field">
+      <label id="lblLoginName">Full name</label>
+      <input type="text" id="loginName" placeholder="e.g. Ramesh Patil">
+    </div>
+    <div class="login-field">
+      <label id="lblLoginId">Mobile number</label>
+      <input type="text" id="loginId" placeholder="10-digit mobile number">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+
+    <button class="btn-login" onclick="doLogin()">Log in</button>
+    <div class="login-note">Prototype login — any details will work. No real accounts are created.</div>
+  </div>
+</div>
+
+<!-- ============ FARMER VIEW ============ -->
+<div id="farmerView" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="brand">
+          <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+            <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+          </svg>
+          <div>
+            <div class="brand-name">FasalSetu</div>
+            <div class="brand-sub">Market linkage &amp; price discovery for farmers</div>
+          </div>
+        </div>
+        <div class="top-right">
+          <span class="role-pill" id="farmerGreeting">Farmer</span>
+          <button class="btn-logout" onclick="logout()">Log out</button>
+        </div>
+      </div>
+      <div class="hero-line">Not "who pays the most" — but "where do I actually take home more."</div>
+      <div class="hero-sub">Enter your crop once. We compare mandis, FPOs and buyers near you — price, transport and fees included — so you can pick with confidence.</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="form-card">
+      <h2 style="font-size:1.15rem; font-weight:600;">Tell us what you're selling</h2>
+      <div class="form-grid">
+        <div class="field">
+          <label>Crop</label>
+          <select id="crop">
+            <option value="tomato">Tomato</option>
+            <option value="onion">Onion</option>
+            <option value="soybean">Soybean</option>
+            <option value="cotton">Cotton</option>
+            <option value="wheat">Wheat</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Quantity</label>
+          <div class="qty-row">
+            <input type="number" id="qty" value="500" min="1">
+            <select id="qtyUnit">
+              <option value="kg">kg</option>
+              <option value="quintal">quintal</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Your location</label>
+          <select id="location">
+            <option value="nashik">Nashik</option>
+            <option value="pune">Pune</option>
+            <option value="nagpur">Nagpur</option>
+            <option value="ahmednagar">Ahmednagar</option>
+            <option value="solapur">Solapur</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Crop quality</label>
+          <div class="quality-pills" id="qualityPills">
+            <button class="sel" data-q="A" onclick="pickQuality('A')">Grade A</button>
+            <button data-q="B" onclick="pickQuality('B')">Grade B</button>
+            <button data-q="C" onclick="pickQuality('C')">Grade C</button>
+          </div>
+        </div>
+      </div>
+      <div class="submit-row">
+        <button class="btn-primary" onclick="runSearch()">Find best buyers</button>
+        <span class="hint">Takes a few seconds — we check 6 nearby options</span>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="results-head">
+        <div>
+          <h2 id="resTitle">Ranked for your 500 kg of Tomato</h2>
+          <div class="results-sub">Ordered by what you'll actually receive after transport and selling costs — not just the listed price.</div>
+        </div>
+        <div class="sort-note">Sorted: highest net return first</div>
+      </div>
+      <div id="cardList"></div>
+
+      <div class="method-note">
+        <b>How we calculate this</b>
+        <div style="margin-top:6px;">Net return = (price per kg × quantity) − transport cost − market/commission fee − handling cost. Transport is estimated from distance; you can confirm exact fare with the buyer before dispatch. Prices shown carry a source and last-updated time — verify before finalising a sale.</div>
+      </div>
+    </div>
+  </div>
+  <footer>Prototype for SIH26132 — Strengthening Market Linkages and Price Discovery for Farmers · Sample data only, for demonstration</footer>
+</div>
+
+<!-- ============ BUYER VIEW ============ -->
+<div id="buyerView" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="brand">
+          <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+            <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+          </svg>
+          <div>
+            <div class="brand-name">FasalSetu</div>
+            <div class="brand-sub">Buyer dashboard</div>
+          </div>
+        </div>
+        <div class="top-right">
+          <span class="role-pill" id="buyerGreeting">Buyer</span>
+          <button class="btn-logout" onclick="logout()">Log out</button>
+        </div>
+      </div>
+      <div class="hero-line">Fresh produce, straight from nearby farmers.</div>
+      <div class="hero-sub">See who's selling what, right now, and reach out directly — no middleman needed to find them.</div>
+    </div>
+  </header>
+
+  <div class="wrap dash-wrap">
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">Active listings near you</div></div>
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Farmers you've contacted</div></div>
+      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Deals closed this month</div></div>
+    </div>
+
+    <div class="section-title">Farmer listings near you</div>
+    <div class="section-sub">Sorted by most recently updated. Prices are what the farmer is asking before any transport arrangement.</div>
+    <div id="buyerListings"></div>
+  </div>
+  <footer>Prototype for SIH26132 — Strengthening Market Linkages and Price Discovery for Farmers · Sample data only, for demonstration</footer>
+</div>
+
+<!-- ============ ADMIN VIEW ============ -->
+<div id="adminView" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="brand">
+          <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+            <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+          </svg>
+          <div>
+            <div class="brand-name">FasalSetu</div>
+            <div class="brand-sub">Administrator dashboard</div>
+          </div>
+        </div>
+        <div class="top-right">
+          <span class="role-pill" id="adminGreeting">Administrator</span>
+          <button class="btn-logout" onclick="logout()">Log out</button>
+        </div>
+      </div>
+      <div class="hero-line">Keep the marketplace trustworthy.</div>
+      <div class="hero-sub">Monitor listings, verify data freshness, and moderate offers that look stale or unreliable.</div>
+    </div>
+  </header>
+
+  <div class="wrap dash-wrap">
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">1,248</div><div class="stat-label">Registered farmers</div></div>
+      <div class="stat-card"><div class="stat-num">312</div><div class="stat-label">Registered buyers</div></div>
+      <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Listings flagged this week</div></div>
+    </div>
+
+    <div class="section-title">Listing moderation</div>
+    <div class="section-sub">Offers older than 24 hours or reported by users need review before they stay visible to farmers.</div>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Buyer / Market</th><th>Crop</th><th>Last updated</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="adminTableBody"></tbody>
+    </table>
+  </div>
+  <footer>Prototype for SIH26132 — Strengthening Market Linkages and Price Discovery for Farmers · Sample data only, for demonstration</footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+let quality = 'A';
+let selectedRole = 'farmer';
+
+const ROLE_DESC = {
+  farmer: "Log in to enter your crop details and compare buyers and markets near you.",
+  buyer: "Log in to see live farmer listings near you and reach out directly.",
+  admin: "Log in to monitor listings, verify data sources, and moderate unreliable offers."
+};
+const ROLE_ID_LABEL = {
+  farmer: "Mobile number",
+  buyer: "Business / mobile number",
+  admin: "Admin ID"
+};
+
+function selectRole(role){
+  selectedRole = role;
+  document.querySelectorAll('.role-tabs button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.role === role);
+  });
+  document.getElementById('roleDesc').textContent = ROLE_DESC[role];
+  document.getElementById('lblLoginId').textContent = ROLE_ID_LABEL[role];
+}
+
+function doLogin(){
+  const name = document.getElementById('loginName').value.trim() || (
+    selectedRole === 'farmer' ? 'Farmer' : selectedRole === 'buyer' ? 'Buyer' : 'Administrator'
+  );
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('farmerView').classList.add('hidden');
+  document.getElementById('buyerView').classList.add('hidden');
+  document.getElementById('adminView').classList.add('hidden');
+
+  if(selectedRole === 'farmer'){
+    document.getElementById('farmerView').classList.remove('hidden');
+    document.getElementById('farmerGreeting').textContent = name;
+    runSearch(true);
+  } else if(selectedRole === 'buyer'){
+    document.getElementById('buyerView').classList.remove('hidden');
+    document.getElementById('buyerGreeting').textContent = name;
+    renderBuyerListings();
+  } else {
+    document.getElementById('adminView').classList.remove('hidden');
+    document.getElementById('adminGreeting').textContent = name;
+    renderAdminTable();
+  }
+  window.scrollTo(0,0);
+}
+
+function logout(){
+  document.getElementById('farmerView').classList.add('hidden');
+  document.getElementById('buyerView').classList.add('hidden');
+  document.getElementById('adminView').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginName').value = '';
+  document.getElementById('loginId').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+function pickQuality(q){
+  quality = q;
+  document.querySelectorAll('.quality-pills button').forEach(b=>{
+    b.classList.toggle('sel', b.dataset.q === q);
+  });
+}
+
+// ---------------- FARMER: pricing engine ----------------
+const CROP_DATA = {
+  tomato:  { label:"Tomato", base:18 },
+  onion:   { label:"Onion", base:14 },
+  soybean: { label:"Soybean", base:44 },
+  cotton:  { label:"Cotton", base:62 },
+  wheat:   { label:"Wheat", base:24 },
+};
+const QUALITY_MULT = { A: 1.0, B: 0.88, C: 0.74 };
+
+const BUYER_TEMPLATES = [
+  { name:"Nashik APMC Market",        type:"mandi",   distBase:12, priceMult:1.00, commission:0.06, fresh:"Updated 40 min ago" },
+  { name:"Sahyadri Farmers FPO",      type:"fpo",      distBase:22, priceMult:1.05, commission:0.03, fresh:"Updated 2 hr ago" },
+  { name:"Green Harvest Traders",     type:"private",  distBase:8,  priceMult:0.94, commission:0.02, fresh:"Updated 1 hr ago" },
+  { name:"Lasalgaon Wholesale Mandi", type:"mandi",    distBase:35, priceMult:1.10, commission:0.06, fresh:"Updated 3 hr ago" },
+  { name:"Krishi Setu Cooperative",   type:"fpo",      distBase:18, priceMult:1.02, commission:0.025,fresh:"Updated 5 hr ago" },
+  { name:"Om Sai Agro Buyers",        type:"private",  distBase:15, priceMult:0.97, commission:0.02, fresh:"Updated 55 min ago" },
+];
+const LOCATION_SPREAD = { nashik:1, pune:1.3, nagpur:1.6, ahmednagar:1.1, solapur:1.4 };
+
+function computeResults(cropKey, qtyKg, locKey, qualKey){
+  const crop = CROP_DATA[cropKey];
+  const spread = LOCATION_SPREAD[locKey] || 1;
+  const qMult = QUALITY_MULT[qualKey];
+  return BUYER_TEMPLATES.map((b) => {
+    const pricePerKg = Math.round(crop.base * b.priceMult * qMult * 100) / 100;
+    const distanceKm = Math.round(b.distBase * spread);
+    const gross = pricePerKg * qtyKg;
+    const transportCost = Math.round(distanceKm * 2.1 * (qtyKg/100));
+    const fee = Math.round(gross * b.commission);
+    const handling = Math.round(40 + qtyKg * 0.06);
+    const net = Math.round(gross - transportCost - fee - handling);
+    return { ...b, pricePerKg, distanceKm, gross, transportCost, fee, handling, net };
+  }).sort((a,b) => b.net - a.net);
+}
+
+function fmtINR(n){ return '₹' + n.toLocaleString('en-IN'); }
+
+function runSearch(silent){
+  const cropKey = document.getElementById('crop').value;
+  let qty = parseFloat(document.getElementById('qty').value) || 0;
+  const unit = document.getElementById('qtyUnit').value;
+  const qtyKg = unit === 'quintal' ? qty * 100 : qty;
+  const locKey = document.getElementById('location').value;
+
+  const results = computeResults(cropKey, qtyKg, locKey, quality);
+  const cropLabel = CROP_DATA[cropKey].label;
+
+  document.getElementById('resTitle').textContent = `Ranked for your ${qty} ${unit} of ${cropLabel}`;
+
+  const list = document.getElementById('cardList');
+  list.innerHTML = '';
+  results.forEach((r, idx) => {
+    const isBest = idx === 0;
+    const card = document.createElement('div');
+    card.className = 'card' + (isBest ? ' best' : '');
+    card.innerHTML = `
+      ${isBest ? `<div class="best-tag">Best return</div>` : ''}
+      <div class="card-top">
+        <div>
+          <div class="buyer-name">${r.name}</div>
+          <div class="buyer-meta">
+            <span class="type-tag type-${r.type}">${r.type === 'mandi' ? 'APMC Mandi' : r.type === 'fpo' ? 'FPO / Cooperative' : 'Private Buyer'}</span>
+            <span>${r.distanceKm} km away</span>
+          </div>
+        </div>
+        <div class="net-block">
+          <div class="net-label">You take home</div>
+          <div class="net-value">${fmtINR(r.net)}</div>
+        </div>
+      </div>
+      <div class="breakdown">
+        <div class="bd-item"><div class="bd-label">Price offered</div><div class="bd-value">₹${r.pricePerKg}/kg</div></div>
+        <div class="bd-item"><div class="bd-label">Transport cost</div><div class="bd-value minus">−${fmtINR(r.transportCost)}</div></div>
+        <div class="bd-item"><div class="bd-label">Market fee</div><div class="bd-value minus">−${fmtINR(r.fee)}</div></div>
+        <div class="bd-item"><div class="bd-label">Handling</div><div class="bd-value minus">−${fmtINR(r.handling)}</div></div>
+      </div>
+      <div class="card-foot">
+        <div class="freshness"><span class="dot"></span>${r.fresh}</div>
+        <button class="btn-contact" onclick="contactBuyer('${r.name.replace(/'/g,"\\'")}')">Contact buyer</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  document.getElementById('results').classList.add('show');
+  if(!silent){
+    document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
+
+function contactBuyer(name){
+  showToast(`Contact request sent to ${name}. They'll typically respond within a few hours.`);
+}
+
+// ---------------- BUYER: listings feed ----------------
+const FARMER_LISTINGS = [
+  { crop:"Tomato", icon:"🍅", farmer:"Ramesh Patil", village:"Niphad, Nashik", qty:"600 kg", ask:"₹19/kg", updated:"20 min ago" },
+  { crop:"Onion", icon:"🧅", farmer:"Sunita Jadhav", village:"Lasalgaon, Nashik", qty:"1.2 quintal", ask:"₹15/kg", updated:"1 hr ago" },
+  { crop:"Soybean", icon:"🌱", farmer:"Vikas More", village:"Kopargaon, Ahmednagar", qty:"800 kg", ask:"₹45/kg", updated:"2 hr ago" },
+  { crop:"Cotton", icon:"🌾", farmer:"Anita Deshmukh", village:"Yeola, Nashik", qty:"3 quintal", ask:"₹63/kg", updated:"3 hr ago" },
+  { crop:"Wheat", icon:"🌿", farmer:"Prakash Salunkhe", village:"Baramati, Pune", qty:"5 quintal", ask:"₹25/kg", updated:"4 hr ago" },
+];
+
+function renderBuyerListings(){
+  const el = document.getElementById('buyerListings');
+  el.innerHTML = '';
+  FARMER_LISTINGS.forEach(l => {
+    const row = document.createElement('div');
+    row.className = 'listing-row';
+    row.innerHTML = `
+      <div class="listing-left">
+        <div class="crop-badge">${l.icon}</div>
+        <div>
+          <div class="listing-title">${l.crop} · ${l.qty}</div>
+          <div class="listing-meta">${l.farmer} · ${l.village} · Updated ${l.updated}</div>
+        </div>
+      </div>
+      <div class="listing-right">
+        <div class="price-ask">${l.ask}</div>
+        <button class="btn-small" onclick="showToast('Request sent to ${l.farmer.replace(/'/g,"\\'")}. They will be notified.')">Contact farmer</button>
+      </div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+// ---------------- ADMIN: moderation table ----------------
+const ADMIN_LISTINGS = [
+  { buyer:"Nashik APMC Market", crop:"Tomato", updated:"40 min ago", status:"ok" },
+  { buyer:"Lasalgaon Wholesale Mandi", crop:"Onion", updated:"3 hr ago", status:"ok" },
+  { buyer:"Unverified Buyer #4471", crop:"Cotton", updated:"29 hr ago", status:"flag" },
+  { buyer:"Om Sai Agro Buyers", crop:"Soybean", updated:"55 min ago", status:"ok" },
+  { buyer:"New Listing — Prakash Traders", crop:"Wheat", updated:"5 min ago", status:"pending" },
+  { buyer:"Green Harvest Traders", crop:"Tomato", updated:"31 hr ago", status:"flag" },
+];
+
+function renderAdminTable(){
+  const body = document.getElementById('adminTableBody');
+  body.innerHTML = '';
+  ADMIN_LISTINGS.forEach(row => {
+    const statusHtml = row.status === 'ok'
+      ? `<span class="status-pill status-ok">Verified</span>`
+      : row.status === 'flag'
+      ? `<span class="status-pill status-flag">Needs review</span>`
+      : `<span class="status-pill status-pending">Pending</span>`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.buyer}</td>
+      <td>${row.crop}</td>
+      <td>${row.updated}</td>
+      <td>${statusHtml}</td>
+      <td class="admin-actions">
+        <button onclick="showToast('${row.buyer.replace(/'/g,"\\'")} approved.')">Approve</button>
+        <button onclick="showToast('${row.buyer.replace(/'/g,"\\'")} removed from listings.')">Remove</button>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 3200);
+}
+</script>
+
+</body>
+</html>
