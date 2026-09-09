@@ -21,14 +21,7 @@ function ensureFile(file, seedValue) {
 }
 
 ensureFile(USERS_FILE, []);
-ensureFile(LISTINGS_FILE, [
-  { id: 1, buyer: 'Warangal APMC Market',        crop: 'Tomato',  updated: new Date(Date.now() - 40 * 60000).toISOString(),   status: 'ok' },
-  { id: 2, buyer: 'Lasalgaon Wholesale Mandi',    crop: 'Onion',   updated: new Date(Date.now() - 3 * 3600000).toISOString(), status: 'ok' },
-  { id: 3, buyer: 'Unverified Buyer #4471',       crop: 'Cotton',  updated: new Date(Date.now() - 29 * 3600000).toISOString(),status: 'flag' },
-  { id: 4, buyer: 'Om Sai Agro Buyers',           crop: 'Soybean', updated: new Date(Date.now() - 55 * 60000).toISOString(),  status: 'ok' },
-  { id: 5, buyer: 'New Listing — Prakash Traders',crop: 'Wheat',   updated: new Date(Date.now() - 5 * 60000).toISOString(),   status: 'pending' },
-  { id: 6, buyer: 'Green Harvest Traders',        crop: 'Tomato',  updated: new Date(Date.now() - 31 * 3600000).toISOString(),status: 'flag' }
-]);
+ensureFile(LISTINGS_FILE, []);
 
 // A tiny write queue so two near-simultaneous requests can't corrupt a file
 // by writing at the same time (naive but sufficient for a demo/prototype).

@@ -492,7 +492,7 @@
       </div>
       <div class="submit-row">
         <button class="btn-primary" onclick="runSearch()" data-i18n="findBestBuyers">Find best buyers</button>
-        <span class="hint" data-i18n="findHint">Takes a few seconds — we check 6 nearby options</span>
+        <span class="hint" data-i18n="findHint">Takes a few seconds — we check every verified buyer near you</span>
       </div>
     </div>
 
@@ -573,9 +573,9 @@
 
   <div class="wrap dash-wrap">
     <div class="stat-row">
-      <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">Active listings near you</div></div>
-      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Farmers you've contacted</div></div>
-      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Deals closed this month</div></div>
+      <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Active listings near you</div></div>
+      <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Farmers you've contacted</div></div>
+      <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Deals closed this month</div></div>
     </div>
 
     <div class="section-title">Farmer listings near you</div>
@@ -617,9 +617,9 @@
 
   <div class="wrap dash-wrap">
     <div class="stat-row">
-      <div class="stat-card"><div class="stat-num">1,248</div><div class="stat-label">Registered farmers</div></div>
-      <div class="stat-card"><div class="stat-num">312</div><div class="stat-label">Registered buyers</div></div>
-      <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Listings flagged this week</div></div>
+      <div class="stat-card"><div class="stat-num" id="statFarmers">—</div><div class="stat-label">Registered farmers</div></div>
+      <div class="stat-card"><div class="stat-num" id="statBuyers">—</div><div class="stat-label">Registered buyers</div></div>
+      <div class="stat-card"><div class="stat-num" id="statFlagged">—</div><div class="stat-label">Listings flagged this week</div></div>
     </div>
 
     <div class="section-title">Listing moderation</div>
@@ -687,7 +687,7 @@ const I18N = {
     crop:"Crop", cropTomato:"Tomato", cropOnion:"Onion", cropSoybean:"Soybean", cropCotton:"Cotton", cropWheat:"Wheat",
     quantity:"Quantity", yourLocation:"Your location", cropQuality:"Crop quality",
     gradeA:"Grade A", gradeB:"Grade B", gradeC:"Grade C",
-    findBestBuyers:"Find best buyers", findHint:"Takes a few seconds — we check 6 nearby options",
+    findBestBuyers:"Find best buyers", findHint:"Takes a few seconds — we check every verified buyer near you",
     fpoTitle:"Selling through an FPO?",
     fpoBody:"Farmer Producer Organisations pool produce from many farmers to negotiate better prices, cut transport cost per farmer, and reach bulk buyers directly.",
     fpoYou:"👨‍🌾 You", fpoFpo:"🏢 FPO / Cooperative", fpoBuyer:"🏪 Bulk Buyer",
@@ -720,7 +720,7 @@ const I18N = {
     crop:"పంట", cropTomato:"టమాటా", cropOnion:"ఉల్లిపాయ", cropSoybean:"సోయాబీన్", cropCotton:"పత్తి", cropWheat:"గోధుమ",
     quantity:"పరిమాణం", yourLocation:"మీ ప్రాంతం", cropQuality:"పంట నాణ్యత",
     gradeA:"గ్రేడ్ A", gradeB:"గ్రేడ్ B", gradeC:"గ్రేడ్ C",
-    findBestBuyers:"ఉత్తమ కొనుగోలుదారుని కనుగొనండి", findHint:"కొన్ని సెకన్లు పడుతుంది — మేము 6 సమీప ఎంపికలను తనిఖీ చేస్తాము",
+    findBestBuyers:"ఉత్తమ కొనుగోలుదారుని కనుగొనండి", findHint:"కొన్ని సెకన్లు పడుతుంది — మేము సమీపంలోని ధృవీకరించిన కొనుగోలుదారులందరినీ తనిఖీ చేస్తాము",
     fpoTitle:"FPO ద్వారా అమ్ముతున్నారా?",
     fpoBody:"రైతు ఉత్పత్తిదారుల సంస్థలు (FPO) చాలామంది రైతుల ఉత్పత్తులను కలిపి మెరుగైన ధరల కోసం చర్చించి, రవాణా ఖర్చును తగ్గించి, పెద్ద కొనుగోలుదారులను నేరుగా చేరుకుంటాయి.",
     fpoYou:"👨‍🌾 మీరు", fpoFpo:"🏢 FPO / సహకార సంఘం", fpoBuyer:"🏪 బల్క్ కొనుగోలుదారు",
@@ -753,7 +753,7 @@ const I18N = {
     crop:"फ़सल", cropTomato:"टमाटर", cropOnion:"प्याज़", cropSoybean:"सोयाबीन", cropCotton:"कपास", cropWheat:"गेहूं",
     quantity:"मात्रा", yourLocation:"आपका स्थान", cropQuality:"फ़सल की गुणवत्ता",
     gradeA:"ग्रेड A", gradeB:"ग्रेड B", gradeC:"ग्रेड C",
-    findBestBuyers:"सबसे अच्छा खरीदार खोजें", findHint:"कुछ सेकंड लगेंगे — हम 6 नज़दीकी विकल्प जांचते हैं",
+    findBestBuyers:"सबसे अच्छा खरीदार खोजें", findHint:"कुछ सेकंड लगेंगे — हम आस-पास के सभी सत्यापित खरीदारों की जांच करते हैं",
     fpoTitle:"FPO के ज़रिए बेच रहे हैं?",
     fpoBody:"किसान उत्पादक संगठन (FPO) कई किसानों की उपज इकट्ठा कर बेहतर दाम तय करते हैं, प्रति किसान परिवहन लागत घटाते हैं, और सीधे थोक खरीदारों तक पहुँचाते हैं।",
     fpoYou:"👨‍🌾 आप", fpoFpo:"🏢 FPO / सहकारी समिति", fpoBuyer:"🏪 थोक खरीदार",
@@ -921,6 +921,7 @@ function enterApp(user){
   } else {
     document.getElementById('adminView').classList.remove('hidden');
     document.getElementById('adminGreeting').textContent = user.name;
+    renderAdminStats();
     renderAdminTable();
   }
   window.scrollTo(0,0);
@@ -976,14 +977,9 @@ const CROP_DATA = {
 };
 const QUALITY_MULT = { A: 1.0, B: 0.88, C: 0.74 };
 
-const BUYER_TEMPLATES = [
-  { name:"Warangal APMC Market",        type:"mandi",   distBase:12, priceMult:1.00, commission:0.06, fresh:"Updated 40 min ago", verified:true,  rating:4.6, deals:212 },
-  { name:"Sahyadri Farmers FPO",      type:"fpo",      distBase:22, priceMult:1.05, commission:0.03, fresh:"Updated 2 hr ago", verified:true,  rating:4.8, deals:340 },
-  { name:"Green Harvest Traders",     type:"private",  distBase:8,  priceMult:0.94, commission:0.02, fresh:"Updated 1 hr ago", verified:true,  rating:4.1, deals:76 },
-  { name:"Lasalgaon Wholesale Mandi", type:"mandi",    distBase:35, priceMult:1.10, commission:0.06, fresh:"Updated 3 hr ago", verified:true,  rating:4.4, deals:501 },
-  { name:"Krishi Setu Cooperative",   type:"fpo",      distBase:18, priceMult:1.02, commission:0.025,fresh:"Updated 5 hr ago", verified:true,  rating:4.7, deals:158 },
-  { name:"Om Sai Agro Buyers",        type:"private",  distBase:15, priceMult:0.97, commission:0.02, fresh:"Updated 55 min ago", verified:false, rating:3.6, deals:9 },
-];
+// Buyers/mandis are added by the admin as real accounts/listings now —
+// starting this empty instead of shipping with sample buyers baked in.
+const BUYER_TEMPLATES = [];
 const LOCATION_SPREAD = { warangal:1, karimnagar:1.3, nalgonda:1.6, khammam:1.1, adilabad:1.4 };
 
 function computeResults(cropKey, qtyKg, locKey, qualKey){
@@ -1018,7 +1014,16 @@ function runSearch(silent){
 
   const list = document.getElementById('cardList');
   list.innerHTML = '';
-  results.forEach((r, idx) => {
+
+  if(results.length === 0){
+    list.innerHTML = `
+      <div class="card" style="text-align:center; padding:30px 20px; color:var(--ink-soft);">
+        <div style="font-size:1.6rem;">🌾</div>
+        <div style="font-weight:700; color:var(--soil); margin-top:6px;">No buyers or mandis added yet</div>
+        <div style="font-size:0.88rem; margin-top:4px;">Once buyers register and are verified by an admin, they'll show up here ranked by net return.</div>
+      </div>`;
+  } else {
+    results.forEach((r, idx) => {
     const isBest = idx === 0;
     const card = document.createElement('div');
     card.className = 'card' + (isBest ? ' best' : '');
@@ -1051,7 +1056,8 @@ function runSearch(silent){
       </div>
     `;
     list.appendChild(card);
-  });
+    });
+  }
 
   document.getElementById('results').classList.add('show');
   renderTrend();
@@ -1215,17 +1221,26 @@ function closeDealModal(){
 }
 
 // ---------------- BUYER: listings feed ----------------
-const FARMER_LISTINGS = [
-  { crop:"Tomato", icon:"🍅", farmer:"Ramesh Patil", village:"Narsampet, Warangal", qty:"600 kg", ask:"₹19/kg", updated:"20 min ago" },
-  { crop:"Onion", icon:"🧅", farmer:"Sunita Jadhav", village:"ReddyPalem, Warangal", qty:"1.2 quintal", ask:"₹15/kg", updated:"1 hr ago" },
-  { crop:"Soybean", icon:"🌱", farmer:"Vikas More", village:"Kopargaon, Khammam", qty:"800 kg", ask:"₹45/kg", updated:"2 hr ago" },
-  { crop:"Cotton", icon:"🌾", farmer:"Anita Deshmukh", village:"KilaWarangal, Warangal", qty:"3 quintal", ask:"₹63/kg", updated:"3 hr ago" },
-  { crop:"Wheat", icon:"🌿", farmer:"Prakash Salunkhe", village:"Baramati, Karimnagar", qty:"5 quintal", ask:"₹25/kg", updated:"4 hr ago" },
-];
+// Farmer produce listings are added by real farmers now — starting empty
+// instead of shipping with sample listings baked in.
+const FARMER_LISTINGS = [];
 
 function renderBuyerListings(){
   const el = document.getElementById('buyerListings');
   el.innerHTML = '';
+
+  if(FARMER_LISTINGS.length === 0){
+    el.innerHTML = `
+      <div class="listing-row" style="justify-content:center; text-align:center; color:var(--ink-soft);">
+        <div>
+          <div style="font-size:1.6rem;">🧺</div>
+          <div style="font-weight:700; color:var(--soil); margin-top:4px;">No farmer listings yet</div>
+          <div style="font-size:0.85rem; margin-top:2px;">As farmers post produce for sale, they'll appear here.</div>
+        </div>
+      </div>`;
+    return;
+  }
+
   FARMER_LISTINGS.forEach(l => {
     const row = document.createElement('div');
     row.className = 'listing-row';
@@ -1244,6 +1259,16 @@ function renderBuyerListings(){
     `;
     el.appendChild(row);
   });
+}
+
+async function renderAdminStats(){
+  try{
+    const resp = await authedFetch('/api/admin/stats');
+    const data = await resp.json();
+    document.getElementById('statFarmers').textContent = data.farmers.toLocaleString('en-IN');
+    document.getElementById('statBuyers').textContent = data.buyers.toLocaleString('en-IN');
+    document.getElementById('statFlagged').textContent = data.flagged.toLocaleString('en-IN');
+  } catch(err){ /* logout already handled inside authedFetch on 401 */ }
 }
 
 // ---------------- ADMIN: moderation table (backend-backed) ----------------
@@ -1301,6 +1326,7 @@ async function approveListing(id){
     if(!resp.ok){ const d = await resp.json(); showToast(d.error || 'Could not approve listing.'); return; }
     showToast('Listing approved and marked verified.');
     renderAdminTable();
+    renderAdminStats();
   } catch(err){ /* logout already handled inside authedFetch on 401 */ }
 }
 
@@ -1310,6 +1336,7 @@ async function removeListing(id){
     if(!resp.ok){ const d = await resp.json(); showToast(d.error || 'Could not remove listing.'); return; }
     showToast('Listing removed from the marketplace.');
     renderAdminTable();
+    renderAdminStats();
   } catch(err){ /* logout already handled inside authedFetch on 401 */ }
 }
 
