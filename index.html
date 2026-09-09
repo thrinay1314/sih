@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FasalSetu — Sell smarter, not just higher</title>
+<title>KisanLink — Sell smarter, not just higher</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -269,7 +269,7 @@
         <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
       </svg>
       <div>
-        <div class="login-brand-name">FasalSetu</div>
+        <div class="login-brand-name">KisanLink</div>
         <div class="login-brand-sub">Market linkage &amp; price discovery</div>
       </div>
     </div>
@@ -288,12 +288,13 @@
     </div>
     <div class="login-field">
       <label id="lblLoginId">Mobile number</label>
-      <input type="text" id="loginId" placeholder="10-digit mobile number">
+      <input type="text" id="loginId" placeholder="10-digit mobile number" inputmode="numeric" oninput="filterLoginId(this)">
     </div>
     <div class="login-field">
       <label>Password</label>
       <input type="password" id="loginPass" placeholder="••••••••">
     </div>
+    <div id="loginError" style="display:none; color:var(--danger); font-size:0.82rem; font-weight:600; margin-bottom:12px;"></div>
 
     <button class="btn-login" onclick="doLogin()">Log in</button>
     <div class="login-note">Prototype login — any details will work. No real accounts are created.</div>
@@ -311,7 +312,7 @@
             <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
           </svg>
           <div>
-            <div class="brand-name">FasalSetu</div>
+            <div class="brand-name">KisanLink</div>
             <div class="brand-sub">Market linkage &amp; price discovery for farmers</div>
           </div>
         </div>
@@ -352,11 +353,11 @@
         <div class="field">
           <label>Your location</label>
           <select id="location">
-            <option value="nashik">Nashik</option>
-            <option value="pune">Pune</option>
-            <option value="nagpur">Nagpur</option>
-            <option value="ahmednagar">Ahmednagar</option>
-            <option value="solapur">Solapur</option>
+            <option value="warangal">Warangal</option>
+            <option value="karimnagar">Karimnagar</option>
+            <option value="nalgonda">Nalgonda</option>
+            <option value="khammam">Khammam</option>
+            <option value="adilabad">Adilabad</option>
           </select>
         </div>
         <div class="field">
@@ -404,7 +405,7 @@
             <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
           </svg>
           <div>
-            <div class="brand-name">FasalSetu</div>
+            <div class="brand-name">KisanLink</div>
             <div class="brand-sub">Buyer dashboard</div>
           </div>
         </div>
@@ -443,7 +444,7 @@
             <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
           </svg>
           <div>
-            <div class="brand-name">FasalSetu</div>
+            <div class="brand-name">KisanLink</div>
             <div class="brand-sub">Administrator dashboard</div>
           </div>
         </div>
@@ -500,12 +501,52 @@ function selectRole(role){
   });
   document.getElementById('roleDesc').textContent = ROLE_DESC[role];
   document.getElementById('lblLoginId').textContent = ROLE_ID_LABEL[role];
+  const idInput = document.getElementById('loginId');
+  idInput.placeholder = role === 'admin' ? 'Admin ID' : '10-digit mobile number';
+  hideLoginError();
+  filterLoginId(idInput);
+}
+
+function filterLoginId(input){
+  // Farmers and buyers log in with a phone number: digits only, capped at 10.
+  if(selectedRole !== 'admin'){
+    input.value = input.value.replace(/\D/g,'').slice(0,10);
+  }
+}
+
+function showLoginError(msg){
+  const el = document.getElementById('loginError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function hideLoginError(){
+  document.getElementById('loginError').style.display = 'none';
 }
 
 function doLogin(){
-  const name = document.getElementById('loginName').value.trim() || (
-    selectedRole === 'farmer' ? 'Farmer' : selectedRole === 'buyer' ? 'Buyer' : 'Administrator'
-  );
+  const name = document.getElementById('loginName').value.trim();
+  const id = document.getElementById('loginId').value.trim();
+  const pass = document.getElementById('loginPass').value;
+
+  if(!name){
+    showLoginError('Please enter your full name.');
+    return;
+  }
+  if(selectedRole !== 'admin' && !/^\d{10}$/.test(id)){
+    showLoginError('Please enter a valid 10-digit mobile number.');
+    return;
+  }
+  if(selectedRole === 'admin' && !id){
+    showLoginError('Please enter your Admin ID.');
+    return;
+  }
+  if(!pass){
+    showLoginError('Please enter your password.');
+    return;
+  }
+  hideLoginError();
+
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('farmerView').classList.add('hidden');
   document.getElementById('buyerView').classList.add('hidden');
@@ -555,14 +596,14 @@ const CROP_DATA = {
 const QUALITY_MULT = { A: 1.0, B: 0.88, C: 0.74 };
 
 const BUYER_TEMPLATES = [
-  { name:"Nashik APMC Market",        type:"mandi",   distBase:12, priceMult:1.00, commission:0.06, fresh:"Updated 40 min ago" },
+  { name:"Warangal APMC Market",        type:"mandi",   distBase:12, priceMult:1.00, commission:0.06, fresh:"Updated 40 min ago" },
   { name:"Sahyadri Farmers FPO",      type:"fpo",      distBase:22, priceMult:1.05, commission:0.03, fresh:"Updated 2 hr ago" },
   { name:"Green Harvest Traders",     type:"private",  distBase:8,  priceMult:0.94, commission:0.02, fresh:"Updated 1 hr ago" },
   { name:"Lasalgaon Wholesale Mandi", type:"mandi",    distBase:35, priceMult:1.10, commission:0.06, fresh:"Updated 3 hr ago" },
   { name:"Krishi Setu Cooperative",   type:"fpo",      distBase:18, priceMult:1.02, commission:0.025,fresh:"Updated 5 hr ago" },
   { name:"Om Sai Agro Buyers",        type:"private",  distBase:15, priceMult:0.97, commission:0.02, fresh:"Updated 55 min ago" },
 ];
-const LOCATION_SPREAD = { nashik:1, pune:1.3, nagpur:1.6, ahmednagar:1.1, solapur:1.4 };
+const LOCATION_SPREAD = { warangal:1, karimnagar:1.3, nalgonda:1.6, khammam:1.1, adilabad:1.4 };
 
 function computeResults(cropKey, qtyKg, locKey, qualKey){
   const crop = CROP_DATA[cropKey];
@@ -641,11 +682,11 @@ function contactBuyer(name){
 
 // ---------------- BUYER: listings feed ----------------
 const FARMER_LISTINGS = [
-  { crop:"Tomato", icon:"🍅", farmer:"Ramesh Patil", village:"Niphad, Nashik", qty:"600 kg", ask:"₹19/kg", updated:"20 min ago" },
-  { crop:"Onion", icon:"🧅", farmer:"Sunita Jadhav", village:"Lasalgaon, Nashik", qty:"1.2 quintal", ask:"₹15/kg", updated:"1 hr ago" },
-  { crop:"Soybean", icon:"🌱", farmer:"Vikas More", village:"Kopargaon, Ahmednagar", qty:"800 kg", ask:"₹45/kg", updated:"2 hr ago" },
-  { crop:"Cotton", icon:"🌾", farmer:"Anita Deshmukh", village:"Yeola, Nashik", qty:"3 quintal", ask:"₹63/kg", updated:"3 hr ago" },
-  { crop:"Wheat", icon:"🌿", farmer:"Prakash Salunkhe", village:"Baramati, Pune", qty:"5 quintal", ask:"₹25/kg", updated:"4 hr ago" },
+  { crop:"Tomato", icon:"🍅", farmer:"Ramesh Patil", village:"Narsampet, Warangal", qty:"600 kg", ask:"₹19/kg", updated:"20 min ago" },
+  { crop:"Onion", icon:"🧅", farmer:"Sunita Jadhav", village:"ReddyPalem, Warangal", qty:"1.2 quintal", ask:"₹15/kg", updated:"1 hr ago" },
+  { crop:"Soybean", icon:"🌱", farmer:"Vikas More", village:"Kopargaon, Khammam", qty:"800 kg", ask:"₹45/kg", updated:"2 hr ago" },
+  { crop:"Cotton", icon:"🌾", farmer:"Anita Deshmukh", village:"KilaWarangal, Warangal", qty:"3 quintal", ask:"₹63/kg", updated:"3 hr ago" },
+  { crop:"Wheat", icon:"🌿", farmer:"Prakash Salunkhe", village:"Baramati, Karimnagar", qty:"5 quintal", ask:"₹25/kg", updated:"4 hr ago" },
 ];
 
 function renderBuyerListings(){
@@ -673,7 +714,7 @@ function renderBuyerListings(){
 
 // ---------------- ADMIN: moderation table ----------------
 const ADMIN_LISTINGS = [
-  { buyer:"Nashik APMC Market", crop:"Tomato", updated:"40 min ago", status:"ok" },
+  { buyer:"Warangal APMC Market", crop:"Tomato", updated:"40 min ago", status:"ok" },
   { buyer:"Lasalgaon Wholesale Mandi", crop:"Onion", updated:"3 hr ago", status:"ok" },
   { buyer:"Unverified Buyer #4471", crop:"Cotton", updated:"29 hr ago", status:"flag" },
   { buyer:"Om Sai Agro Buyers", crop:"Soybean", updated:"55 min ago", status:"ok" },

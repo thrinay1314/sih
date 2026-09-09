@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KisanLink — Sell smarter, not just higher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#3E2B1F;
+    --leaf:#1F5E3D;
+    --leaf-light:#2E7D4F;
+    --wheat:#E4A72E;
+    --wheat-deep:#C4841E;
+    --sky:#3A7CA5;
+    --paper:#F7F2E9;
+    --paper-warm:#EFE6D3;
+    --ink:#2A1F16;
+    --ink-soft:#6B5A47;
+    --line:#DCCBA8;
+    --white:#FFFDF9;
+    --danger:#B5462F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Hanken Grotesk', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--soil);
+    margin:0;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+  .hidden{display:none !important;}
+
+  /* ================= LOGIN SCREEN ================= */
+  #loginScreen{
+    min-height:100vh;
+    background:var(--leaf);
+    background-image:
+      radial-gradient(circle at 10% 15%, rgba(255,255,255,0.07) 0, transparent 45%),
+      radial-gradient(circle at 92% 85%, rgba(255,255,255,0.06) 0, transparent 42%);
+    display:flex; align-items:center; justify-content:center; padding:32px 16px;
+  }
+  .login-card{
+    background:var(--white); border-radius:20px; max-width:440px; width:100%;
+    padding:34px 30px 30px; box-shadow:0 30px 60px -25px rgba(0,0,0,0.45);
+  }
+  .login-brand{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .login-brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:1.4rem; color:var(--soil);}
+  .login-brand-sub{font-size:0.8rem; color:var(--ink-soft); margin-top:1px;}
+  .role-tabs{ display:flex; gap:6px; background:var(--paper-warm); padding:4px; border-radius:12px; margin-bottom:22px;}
+  .role-tabs button{
+    flex:1; border:none; background:transparent; padding:10px 6px; border-radius:9px;
+    font-family:inherit; font-weight:700; font-size:0.85rem; color:var(--ink-soft); cursor:pointer;
+  }
+  .role-tabs button.active{ background:var(--leaf); color:var(--white); }
+  .login-field{ margin-bottom:14px; }
+  .login-field label{ display:block; font-size:0.8rem; font-weight:700; color:var(--ink-soft); margin-bottom:6px;}
+  .login-field input{
+    width:100%; padding:12px 13px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-warm); font-family:inherit; font-size:1rem; color:var(--ink);
+  }
+  .login-field input:focus{ outline:none; border-color:var(--leaf-light); background:var(--white); }
+  .role-desc{
+    font-size:0.82rem; color:var(--ink-soft); background:var(--paper-warm);
+    border-radius:10px; padding:10px 12px; margin-bottom:18px; line-height:1.45;
+  }
+  .btn-login{
+    width:100%; background:var(--wheat-deep); color:var(--white); border:none; padding:13px;
+    border-radius:11px; font-family:inherit; font-weight:700; font-size:1rem; cursor:pointer;
+    box-shadow:0 8px 18px -8px rgba(196,132,30,0.6);
+  }
+  .btn-login:hover{ background:#AD7419; }
+  .login-note{ margin-top:14px; font-size:0.76rem; color:var(--ink-soft); text-align:center; }
+
+  /* ================= SHARED TOP BAR ================= */
+  header.top{
+    background:var(--leaf);
+    background-image:
+      radial-gradient(circle at 12% 20%, rgba(255,255,255,0.06) 0, transparent 45%),
+      radial-gradient(circle at 90% 80%, rgba(255,255,255,0.05) 0, transparent 40%);
+    color:var(--white);
+    padding:26px 0 36px;
+  }
+  .top-row{display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand svg{flex-shrink:0;}
+  .brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:1.4rem; letter-spacing:0.2px;}
+  .brand-sub{font-size:0.76rem; color:#CFE8DA; margin-top:1px;}
+  .top-right{ display:flex; align-items:center; gap:12px; }
+  .role-pill{
+    background:rgba(255,255,255,0.14); color:var(--white); font-size:0.78rem; font-weight:700;
+    padding:7px 14px; border-radius:999px;
+  }
+  .btn-logout{
+    background:transparent; border:1.5px solid rgba(255,255,255,0.4); color:var(--white);
+    font-family:inherit; font-size:0.8rem; font-weight:700; padding:7px 14px; border-radius:999px; cursor:pointer;
+  }
+  .btn-logout:hover{ background:rgba(255,255,255,0.14); }
+  .hero-line{
+    margin-top:26px; font-family:'Fraunces', serif; font-weight:500;
+    font-size:clamp(1.5rem, 3.6vw, 2.3rem); max-width:640px; color:var(--white); line-height:1.18;
+  }
+  .hero-sub{margin-top:10px; color:#D8ECDF; font-size:1rem; max-width:560px;}
+
+  /* ================= FARMER: FORM CARD ================= */
+  .form-card{
+    background:var(--white); border:1px solid var(--line); border-radius:18px;
+    margin-top:-40px; padding:26px 26px 22px; box-shadow:0 18px 40px -20px rgba(62,43,31,0.35);
+    position:relative;
+  }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; margin-top:18px; }
+  @media(max-width:620px){ .form-grid{grid-template-columns:1fr;} }
+  .field label{ display:block; font-size:0.82rem; font-weight:700; color:var(--ink-soft); margin-bottom:6px; }
+  .field select, .field input{
+    width:100%; padding:12px 13px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-warm); font-family:inherit; font-size:1rem; color:var(--ink); appearance:none;
+  }
+  .field select:focus, .field input:focus{ outline:none; border-color:var(--leaf-light); background:var(--white); }
+  .qty-row{display:flex; gap:8px;}
+  .qty-row input{flex:1;}
+  .qty-row select{width:92px; flex-shrink:0;}
+  .quality-pills{display:flex; gap:8px;}
+  .quality-pills button{
+    flex:1; padding:11px 6px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-warm); font-family:inherit; font-weight:700; font-size:0.9rem;
+    cursor:pointer; color:var(--ink-soft);
+  }
+  .quality-pills button.sel{ background:var(--leaf); border-color:var(--leaf); color:var(--white); }
+  .submit-row{ margin-top:22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .btn-primary{
+    background:var(--wheat-deep); color:var(--white); border:none; padding:14px 26px;
+    border-radius:11px; font-family:inherit; font-weight:700; font-size:1rem; cursor:pointer;
+    box-shadow:0 8px 18px -8px rgba(196,132,30,0.6);
+  }
+  .btn-primary:hover{background:#AD7419;}
+  .hint{font-size:0.85rem; color:var(--ink-soft);}
+
+  /* ================= RESULTS (farmer) ================= */
+  .results{ margin-top:38px; padding-bottom:60px; display:none; }
+  .results.show{display:block;}
+  .results-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .results-head h2{ font-size:1.4rem; font-weight:600; }
+  .results-sub{color:var(--ink-soft); font-size:0.92rem; max-width:520px;}
+  .sort-note{
+    font-size:0.8rem; color:var(--ink-soft); background:var(--paper-warm);
+    border:1px solid var(--line); padding:6px 12px; border-radius:999px; white-space:nowrap;
+  }
+  .card{
+    background:var(--white); border:1.5px solid var(--line); border-radius:16px;
+    margin-top:16px; padding:20px 20px 18px; position:relative; overflow:hidden;
+  }
+  .card.best{ border-color:var(--leaf); box-shadow:0 14px 30px -20px rgba(31,94,61,0.5); }
+  .best-tag{
+    position:absolute; top:0; right:0; background:var(--leaf); color:var(--white);
+    font-size:0.72rem; font-weight:700; padding:6px 14px; border-radius:0 0 0 12px; letter-spacing:0.3px;
+  }
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;}
+  .buyer-name{font-family:'Fraunces', serif; font-size:1.15rem; font-weight:600; color:var(--soil);}
+  .buyer-meta{ font-size:0.85rem; color:var(--ink-soft); margin-top:3px; display:flex; gap:10px; flex-wrap:wrap;}
+  .type-tag{ font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:6px; letter-spacing:0.2px; }
+  .type-mandi{ background:#E8EFE4; color:var(--leaf); }
+  .type-fpo{ background:#E7EEF3; color:var(--sky); }
+  .type-private{ background:#F3E9D7; color:var(--wheat-deep); }
+  .net-block{ text-align:right; }
+  .net-label{ font-size:0.72rem; color:var(--ink-soft); font-weight:700; }
+  .net-value{ font-family:'Fraunces', serif; font-size:1.55rem; font-weight:700; color:var(--leaf); }
+  .breakdown{
+    margin-top:16px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+    border-top:1px dashed var(--line); padding-top:14px;
+  }
+  @media(max-width:620px){ .breakdown{grid-template-columns:repeat(2,1fr);} }
+  .bd-item .bd-label{font-size:0.72rem; color:var(--ink-soft); font-weight:600;}
+  .bd-item .bd-value{font-size:0.96rem; font-weight:700; margin-top:2px;}
+  .bd-value.minus{color:var(--danger);}
+  .card-foot{ margin-top:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .freshness{ font-size:0.78rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;}
+  .freshness .dot{ width:7px; height:7px; border-radius:50%; background:var(--leaf-light); display:inline-block;}
+  .btn-contact{
+    background:var(--white); border:1.5px solid var(--leaf); color:var(--leaf); font-family:inherit;
+    font-weight:700; font-size:0.88rem; padding:9px 16px; border-radius:9px; cursor:pointer;
+  }
+  .btn-contact:hover{ background:var(--leaf); color:var(--white); }
+  .method-note{
+    margin-top:26px; background:var(--paper-warm); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; font-size:0.86rem; color:var(--ink-soft);
+  }
+  .method-note b{color:var(--ink);}
+
+  /* ================= BUYER DASHBOARD ================= */
+  .dash-wrap{ padding:30px 0 60px; }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:-40px; }
+  @media(max-width:620px){ .stat-row{grid-template-columns:1fr;} }
+  .stat-card{
+    background:var(--white); border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+    box-shadow:0 14px 30px -22px rgba(62,43,31,0.35);
+  }
+  .stat-num{ font-family:'Fraunces', serif; font-size:1.7rem; font-weight:700; color:var(--soil); }
+  .stat-label{ font-size:0.8rem; color:var(--ink-soft); margin-top:2px; }
+  .section-title{ font-size:1.2rem; font-weight:600; margin-top:34px; margin-bottom:4px; }
+  .section-sub{ font-size:0.9rem; color:var(--ink-soft); margin-bottom:14px; }
+  .listing-row{
+    background:var(--white); border:1.5px solid var(--line); border-radius:14px; padding:16px 18px;
+    display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:12px; flex-wrap:wrap;
+  }
+  .listing-left{ display:flex; gap:14px; align-items:center; }
+  .crop-badge{
+    width:46px; height:46px; border-radius:12px; background:var(--paper-warm);
+    display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;
+  }
+  .listing-title{ font-weight:700; color:var(--soil); }
+  .listing-meta{ font-size:0.82rem; color:var(--ink-soft); margin-top:2px; }
+  .listing-right{ display:flex; align-items:center; gap:10px; }
+  .price-ask{ font-family:'Fraunces', serif; font-weight:700; font-size:1.1rem; color:var(--leaf); }
+  .btn-small{
+    background:var(--leaf); color:var(--white); border:none; padding:9px 15px; border-radius:9px;
+    font-family:inherit; font-weight:700; font-size:0.84rem; cursor:pointer;
+  }
+  .btn-small:hover{ background:var(--leaf-light); }
+
+  /* ================= ADMIN DASHBOARD ================= */
+  .admin-table{
+    width:100%; border-collapse:collapse; background:var(--white); border:1px solid var(--line);
+    border-radius:14px; overflow:hidden; margin-top:12px;
+  }
+  .admin-table th{
+    background:var(--paper-warm); text-align:left; font-size:0.76rem; font-weight:700; color:var(--ink-soft);
+    padding:11px 14px; letter-spacing:0.2px;
+  }
+  .admin-table td{ padding:12px 14px; font-size:0.88rem; border-top:1px solid var(--line); }
+  .status-pill{ font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
+  .status-ok{ background:#E8EFE4; color:var(--leaf); }
+  .status-flag{ background:#F7E3DC; color:var(--danger); }
+  .status-pending{ background:#F3E9D7; color:var(--wheat-deep); }
+  .admin-actions button{
+    border:1.5px solid var(--line); background:var(--white); color:var(--ink-soft); font-family:inherit;
+    font-size:0.78rem; font-weight:700; padding:5px 10px; border-radius:7px; cursor:pointer; margin-right:6px;
+  }
+  .admin-actions button:hover{ border-color:var(--leaf); color:var(--leaf); }
+
+  /* toast */
+  #toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--soil); color:var(--white); padding:13px 22px; border-radius:11px;
+    font-size:0.92rem; opacity:0; pointer-events:none; transition:all .28s ease; z-index:50;
+    box-shadow:0 12px 28px -10px rgba(0,0,0,0.4); max-width:88vw; text-align:center;
+  }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  footer{ text-align:center; padding:26px 20px 40px; font-size:0.8rem; color:var(--ink-soft); }
+
+  /* ================= LANGUAGE SWITCH ================= */
+  .lang-switch{ display:flex; gap:2px; align-items:center; font-size:0.78rem; }
+  .lang-switch button{
+    background:transparent; border:none; color:rgba(255,255,255,0.65); font-family:inherit;
+    font-weight:700; font-size:0.78rem; padding:6px 8px; cursor:pointer; border-radius:6px;
+  }
+  .lang-switch button.active{ color:var(--white); background:rgba(255,255,255,0.16); }
+  .login-card .lang-switch{ justify-content:flex-end; margin-bottom:10px; }
+  .login-card .lang-switch button{ color:var(--ink-soft); }
+  .login-card .lang-switch button.active{ color:var(--leaf); background:var(--paper-warm); }
+
+  /* ================= LIVE MANDI PRICE TICKER ================= */
+  .price-ticker{
+    background:var(--white); border:1px solid var(--line); border-radius:16px; margin-top:18px;
+    padding:16px 18px; box-shadow:0 14px 30px -24px rgba(62,43,31,0.35);
+  }
+  .price-ticker-head{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
+  .price-ticker-head h3{ font-size:0.98rem; font-weight:600; }
+  .price-updated{ font-size:0.76rem; color:var(--ink-soft); }
+  .price-updated .dot{ width:6px; height:6px; border-radius:50%; background:var(--leaf-light); display:inline-block; margin-right:5px; }
+  .price-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:12px; }
+  @media(max-width:620px){ .price-grid{grid-template-columns:repeat(2,1fr);} }
+  .price-chip{ background:var(--paper-warm); border-radius:10px; padding:9px 10px; text-align:center; }
+  .price-chip .pc-icon{ font-size:1.1rem; }
+  .price-chip .pc-price{ font-family:'Fraunces',serif; font-weight:700; color:var(--leaf); font-size:0.98rem; margin-top:2px; }
+  .price-chip .pc-label{ font-size:0.7rem; color:var(--ink-soft); }
+  .price-source-note{ margin-top:10px; font-size:0.74rem; color:var(--ink-soft); }
+
+  /* ================= TREND + SELL/WAIT ================= */
+  .trend-card{
+    background:var(--white); border:1px solid var(--line); border-radius:16px; margin-top:16px;
+    padding:18px 20px; display:grid; grid-template-columns:1.3fr 1fr; gap:20px;
+  }
+  @media(max-width:620px){ .trend-card{grid-template-columns:1fr;} }
+  .trend-title{ font-size:0.9rem; font-weight:700; color:var(--ink-soft); margin-bottom:8px; }
+  .sparkline{ display:flex; align-items:flex-end; gap:5px; height:60px; }
+  .sparkline div{ flex:1; background:var(--leaf-light); border-radius:3px 3px 0 0; }
+  .trend-labels{ display:flex; justify-content:space-between; font-size:0.68rem; color:var(--ink-soft); margin-top:4px; }
+  .trend-caption{ font-size:0.78rem; color:var(--ink-soft); margin-top:8px; }
+  .insight-box{ background:var(--paper-warm); border-radius:12px; padding:14px 16px; }
+  .insight-box .il{ font-size:0.76rem; color:var(--ink-soft); display:flex; justify-content:space-between; margin-top:6px; }
+  .insight-box .il b{ color:var(--ink); }
+  .rec-pill{ display:inline-block; font-weight:700; font-size:0.85rem; padding:6px 12px; border-radius:999px; margin-top:10px; }
+  .rec-go{ background:#E8EFE4; color:var(--leaf); }
+  .rec-wait{ background:#F7E3DC; color:var(--danger); }
+  .rec-why{ font-size:0.74rem; color:var(--ink-soft); margin-top:6px; }
+  .estimate-flag{ font-size:0.7rem; color:var(--ink-soft); font-style:italic; margin-top:8px; }
+
+  /* ================= FPO BANNER ================= */
+  .fpo-banner{
+    margin-top:16px; background:#E7EEF3; border:1px solid #C9DCE8; border-radius:14px;
+    padding:14px 18px; font-size:0.85rem; color:var(--ink);
+  }
+  .fpo-banner b{ color:var(--sky); }
+  .fpo-flow{ display:flex; align-items:center; gap:8px; margin-top:8px; font-weight:700; font-size:0.82rem; flex-wrap:wrap; }
+  .fpo-flow span.arrow{ color:var(--ink-soft); font-weight:400; }
+
+  /* ================= ROUTE MINI + VOICE + VERIFY ================= */
+  .route-mini{ display:flex; align-items:center; gap:6px; font-size:0.78rem; color:var(--ink-soft); margin-top:10px; }
+  .route-mini .rline{ flex:1; height:1px; background:var(--line); position:relative; }
+  .mic-btn{
+    flex-shrink:0; width:46px; border-radius:10px; border:1.5px solid var(--line); background:var(--paper-warm);
+    cursor:pointer; font-size:1.1rem;
+  }
+  .mic-btn.listening{ background:var(--danger); border-color:var(--danger); color:var(--white); }
+  .voice-row{ display:flex; gap:8px; margin-top:14px; align-items:center; }
+  .voice-hint{ font-size:0.78rem; color:var(--ink-soft); }
+  .verified-badge{ font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:#E8EFE4; color:var(--leaf); }
+  .unverified-badge{ font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:#F3E9D7; color:var(--wheat-deep); }
+  .rating{ font-size:0.78rem; color:var(--ink-soft); }
+
+  /* ================= TRANSACTION FLOW MODAL ================= */
+  #dealModal{
+    position:fixed; inset:0; background:rgba(42,31,22,0.55); display:none; align-items:center;
+    justify-content:center; padding:20px; z-index:80;
+  }
+  #dealModal.show{ display:flex; }
+  .deal-card{
+    background:var(--white); border-radius:18px; max-width:460px; width:100%; padding:26px 24px;
+    box-shadow:0 30px 60px -25px rgba(0,0,0,0.5);
+  }
+  .deal-steps{ display:flex; flex-wrap:wrap; gap:6px; margin:16px 0; }
+  .deal-step{
+    font-size:0.72rem; font-weight:700; padding:5px 9px; border-radius:999px; background:var(--paper-warm);
+    color:var(--ink-soft);
+  }
+  .deal-step.done{ background:var(--leaf); color:var(--white); }
+  .deal-step.current{ background:var(--wheat); color:var(--soil); }
+  .deal-status{ font-size:0.95rem; font-weight:700; color:var(--soil); margin-top:6px; }
+  .deal-desc{ font-size:0.85rem; color:var(--ink-soft); margin-top:6px; }
+  .deal-actions{ display:flex; gap:10px; margin-top:20px; }
+  .deal-actions button{ flex:1; }
+  .btn-secondary{
+    background:transparent; border:1.5px solid var(--line); color:var(--ink-soft); padding:11px;
+    border-radius:10px; font-family:inherit; font-weight:700; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="lang-switch" id="loginLangSwitch">
+      <button class="active" data-lang="en" onclick="setLang('en')">English</button>
+      <button data-lang="te" onclick="setLang('te')">తెలుగు</button>
+      <button data-lang="hi" onclick="setLang('hi')">हिंदी</button>
+    </div>
+    <div class="login-brand">
+      <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
+        <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+        <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+      </svg>
+      <div>
+        <div class="login-brand-name">KisanLink</div>
+        <div class="login-brand-sub" data-i18n="loginSub">Market linkage &amp; price discovery</div>
+      </div>
+    </div>
+
+    <div class="role-tabs">
+      <button class="active" data-role="farmer" onclick="selectRole('farmer')" data-i18n="roleFarmer">Farmer</button>
+      <button data-role="buyer" onclick="selectRole('buyer')" data-i18n="roleBuyer">Buyer</button>
+      <button data-role="admin" onclick="selectRole('admin')" data-i18n="roleAdmin">Administrator</button>
+    </div>
+
+    <div class="role-desc" id="roleDesc" data-i18n="roleDescFarmer">Log in to enter your crop details and compare buyers and markets near you.</div>
+
+    <div class="login-field">
+      <label id="lblLoginName" data-i18n="fullName">Full name</label>
+      <input type="text" id="loginName" placeholder="e.g. Ramesh Patil">
+    </div>
+    <div class="login-field">
+      <label id="lblLoginId" data-i18n="mobileNumber">Mobile number</label>
+      <input type="text" id="loginId" placeholder="10-digit mobile number" inputmode="numeric" oninput="filterLoginId(this)">
+    </div>
+    <div class="login-field">
+      <label data-i18n="password">Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+    <div id="loginError" style="display:none; color:var(--danger); font-size:0.82rem; font-weight:600; margin-bottom:12px;"></div>
+
+    <button class="btn-login" id="loginSubmitBtn" onclick="submitAuthForm()" data-i18n="logIn">Log in</button>
+    <div class="login-note" id="authToggleNote">New here? <a href="#" onclick="toggleAuthMode(event)" style="color:var(--leaf); font-weight:700;">Create an account</a> instead.</div>
+    <div class="login-note" style="margin-top:4px;">🔒 Passwords are hashed (bcrypt) and never stored in plain text. Sessions expire automatically after inactivity.</div>
+  </div>
+</div>
+
+<!-- ============ FARMER VIEW ============ -->
+<div id="farmerView" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="brand">
+          <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+            <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+          </svg>
+          <div>
+            <div class="brand-name">KisanLink</div>
+            <div class="brand-sub">Market linkage &amp; price discovery for farmers</div>
+          </div>
+        </div>
+        <div class="top-right">
+          <div class="lang-switch" id="farmerLangSwitch">
+            <button class="active" data-lang="en" onclick="setLang('en')">EN</button>
+            <button data-lang="te" onclick="setLang('te')">తె</button>
+            <button data-lang="hi" onclick="setLang('hi')">हि</button>
+          </div>
+          <span class="role-pill" id="farmerGreeting">Farmer</span>
+          <button class="btn-logout" onclick="logout()" data-i18n="logOut">Log out</button>
+        </div>
+      </div>
+      <div class="hero-line" data-i18n="heroLine">Not "who pays the most" — but "where do I actually take home more."</div>
+      <div class="hero-sub" data-i18n="heroSub">Enter your crop once. We compare mandis, FPOs and buyers near you — price, transport and fees included — so you can pick with confidence.</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="price-ticker">
+      <div class="price-ticker-head">
+        <h3 data-i18n="marketPricesToday">📊 Today's market prices</h3>
+        <div class="price-updated"><span class="dot"></span><span id="priceUpdatedText" data-i18n="lastUpdated2h">Last updated: 2 hours ago</span></div>
+      </div>
+      <div class="price-grid" id="priceGrid"></div>
+      <div class="price-source-note" data-i18n="priceSourceNote">Sample prices for this demo. In production this connects to government/mandi (eNAM / Agmarknet) live price feeds.</div>
+    </div>
+
+    <div class="form-card">
+      <h2 style="font-size:1.15rem; font-weight:600;" data-i18n="tellUsWhat">Tell us what you're selling</h2>
+      <div class="voice-row">
+        <button class="mic-btn" id="micBtn" onclick="startVoiceInput()" title="Speak your crop and quantity">🎤</button>
+        <span class="voice-hint" id="voiceHint" data-i18n="voiceHint">Tap the mic and say something like "500 kg tomatoes" — we'll fill the form for you.</span>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label data-i18n="crop">Crop</label>
+          <select id="crop" onchange="renderTrend()">
+            <option value="tomato" data-i18n="cropTomato">Tomato</option>
+            <option value="onion" data-i18n="cropOnion">Onion</option>
+            <option value="soybean" data-i18n="cropSoybean">Soybean</option>
+            <option value="cotton" data-i18n="cropCotton">Cotton</option>
+            <option value="wheat" data-i18n="cropWheat">Wheat</option>
+          </select>
+        </div>
+        <div class="field">
+          <label data-i18n="quantity">Quantity</label>
+          <div class="qty-row">
+            <input type="number" id="qty" value="500" min="1">
+            <select id="qtyUnit">
+              <option value="kg">kg</option>
+              <option value="quintal">quintal</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label data-i18n="yourLocation">Your location</label>
+          <select id="location">
+            <option value="warangal">Warangal</option>
+            <option value="karimnagar">Karimnagar</option>
+            <option value="nalgonda">Nalgonda</option>
+            <option value="khammam">Khammam</option>
+            <option value="adilabad">Adilabad</option>
+          </select>
+        </div>
+        <div class="field">
+          <label data-i18n="cropQuality">Crop quality</label>
+          <div class="quality-pills" id="qualityPills">
+            <button class="sel" data-q="A" onclick="pickQuality('A')" data-i18n="gradeA">Grade A</button>
+            <button data-q="B" onclick="pickQuality('B')" data-i18n="gradeB">Grade B</button>
+            <button data-q="C" onclick="pickQuality('C')" data-i18n="gradeC">Grade C</button>
+          </div>
+        </div>
+      </div>
+      <div class="submit-row">
+        <button class="btn-primary" onclick="runSearch()" data-i18n="findBestBuyers">Find best buyers</button>
+        <span class="hint" data-i18n="findHint">Takes a few seconds — we check 6 nearby options</span>
+      </div>
+    </div>
+
+    <div class="fpo-banner">
+      <div><b data-i18n="fpoTitle">Selling through an FPO?</b> <span data-i18n="fpoBody">Farmer Producer Organisations pool produce from many farmers to negotiate better prices, cut transport cost per farmer, and reach bulk buyers directly.</span></div>
+      <div class="fpo-flow">
+        <span data-i18n="fpoYou">👨‍🌾 You</span><span class="arrow">→</span><span data-i18n="fpoFpo">🏢 FPO / Cooperative</span><span class="arrow">→</span><span data-i18n="fpoBuyer">🏪 Bulk Buyer</span>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="results-head">
+        <div>
+          <h2 id="resTitle">Ranked for your 500 kg of Tomato</h2>
+          <div class="results-sub" data-i18n="resultsSub">Ordered by what you'll actually receive after transport and selling costs — not just the listed price.</div>
+        </div>
+        <div class="sort-note" data-i18n="sortNote">Sorted: highest net return first</div>
+      </div>
+
+      <div class="trend-card">
+        <div>
+          <div class="trend-title" id="trendTitle" data-i18n="priceTrend">Price trend — last 7 days</div>
+          <div class="sparkline" id="sparkline"></div>
+          <div class="trend-labels"><span>D-6</span><span>D-5</span><span>D-4</span><span>D-3</span><span>D-2</span><span>D-1</span><span data-i18n="today">Today</span></div>
+          <div class="trend-caption" id="trendCaption"></div>
+        </div>
+        <div class="insight-box">
+          <div class="trend-title" data-i18n="marketInsight">📊 Market insight</div>
+          <div class="il"><span data-i18n="currentPrice">Current price</span><b id="insightPrice"></b></div>
+          <div class="il"><span data-i18n="sevenDayTrend">7-day trend</span><b id="insightTrend"></b></div>
+          <div class="il"><span data-i18n="nearbyDemand">Nearby demand</span><b id="insightDemand"></b></div>
+          <div id="recPill"></div>
+          <div class="rec-why" id="recWhy"></div>
+          <div class="estimate-flag" data-i18n="estimateFlag">These are estimates based on sample data, not a guarantee of future price.</div>
+        </div>
+      </div>
+
+      <div id="cardList"></div>
+
+      <div class="method-note">
+        <b data-i18n="howWeCalc">How we calculate this</b>
+        <div style="margin-top:6px;" data-i18n="howWeCalcBody">Net return = (price per kg × quantity) − transport cost − market/commission fee − handling cost. Transport is estimated from distance; you can confirm exact fare with the buyer before dispatch. Prices shown carry a source and last-updated time — verify before finalising a sale.</div>
+      </div>
+    </div>
+  </div>
+  <footer data-i18n="footerText">Prototype for SIH26132 — Strengthening Market Linkages and Price Discovery for Farmers · Sample data only, for demonstration</footer>
+</div>
+
+<!-- ============ BUYER VIEW ============ -->
+<div id="buyerView" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="brand">
+          <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+            <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+          </svg>
+          <div>
+            <div class="brand-name">KisanLink</div>
+            <div class="brand-sub">Buyer dashboard</div>
+          </div>
+        </div>
+        <div class="top-right">
+          <div class="lang-switch">
+            <button class="active" data-lang="en" onclick="setLang('en')">EN</button>
+            <button data-lang="te" onclick="setLang('te')">తె</button>
+            <button data-lang="hi" onclick="setLang('hi')">हि</button>
+          </div>
+          <span class="role-pill" id="buyerGreeting">Buyer</span>
+          <button class="btn-logout" onclick="logout()" data-i18n="logOut">Log out</button>
+        </div>
+      </div>
+      <div class="hero-line">Fresh produce, straight from nearby farmers.</div>
+      <div class="hero-sub">See who's selling what, right now, and reach out directly — no middleman needed to find them.</div>
+    </div>
+  </header>
+
+  <div class="wrap dash-wrap">
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">Active listings near you</div></div>
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Farmers you've contacted</div></div>
+      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Deals closed this month</div></div>
+    </div>
+
+    <div class="section-title">Farmer listings near you</div>
+    <div class="section-sub">Sorted by most recently updated. Prices are what the farmer is asking before any transport arrangement.</div>
+    <div id="buyerListings"></div>
+  </div>
+  <footer>Prototype for SIH26132 — Strengthening Market Linkages and Price Discovery for Farmers · Sample data only, for demonstration</footer>
+</div>
+
+<!-- ============ ADMIN VIEW ============ -->
+<div id="adminView" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="brand">
+          <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="19" r="19" fill="#E4A72E"/>
+            <path d="M19 27C19 27 10 22.5 10 15.8C10 12 13 9.5 16 10.7C17.3 11.2 18.4 12.4 19 13.6C19.6 12.4 20.7 11.2 22 10.7C25 9.5 28 12 28 15.8C28 22.5 19 27 19 27Z" fill="#1F5E3D"/>
+          </svg>
+          <div>
+            <div class="brand-name">KisanLink</div>
+            <div class="brand-sub">Administrator dashboard</div>
+          </div>
+        </div>
+        <div class="top-right">
+          <div class="lang-switch">
+            <button class="active" data-lang="en" onclick="setLang('en')">EN</button>
+            <button data-lang="te" onclick="setLang('te')">తె</button>
+            <button data-lang="hi" onclick="setLang('hi')">हि</button>
+          </div>
+          <span class="role-pill" id="adminGreeting">Administrator</span>
+          <button class="btn-logout" onclick="logout()" data-i18n="logOut">Log out</button>
+        </div>
+      </div>
+      <div class="hero-line">Keep the marketplace trustworthy.</div>
+      <div class="hero-sub">Monitor listings, verify data freshness, and moderate offers that look stale or unreliable.</div>
+    </div>
+  </header>
+
+  <div class="wrap dash-wrap">
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">1,248</div><div class="stat-label">Registered farmers</div></div>
+      <div class="stat-card"><div class="stat-num">312</div><div class="stat-label">Registered buyers</div></div>
+      <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Listings flagged this week</div></div>
+    </div>
+
+    <div class="section-title">Listing moderation</div>
+    <div class="section-sub">Offers older than 24 hours or reported by users need review before they stay visible to farmers.</div>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Buyer / Market</th><th>Crop</th><th>Last updated</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="adminTableBody"></tbody>
+    </table>
+  </div>
+  <footer>Prototype for SIH26132 — Strengthening Market Linkages and Price Discovery for Farmers · Sample data only, for demonstration</footer>
+</div>
+
+<div id="dealModal">
+  <div class="deal-card">
+    <h3 style="font-size:1.1rem; font-weight:600;" id="dealBuyerName">Deal with Buyer</h3>
+    <div class="deal-steps" id="dealSteps"></div>
+    <div class="deal-status" id="dealStatus"></div>
+    <div class="deal-desc" id="dealDesc"></div>
+    <div class="deal-actions">
+      <button class="btn-secondary" onclick="closeDealModal()" id="dealCloseBtn">Close</button>
+      <button class="btn-primary" onclick="advanceDeal()" id="dealNextBtn" style="flex:1;">Next step</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+let quality = 'A';
+let selectedRole = 'farmer';
+let currentLang = 'en';
+
+// ---------------- LANGUAGE / i18n ----------------
+const ROLE_DESC = {
+  en:{ farmer: "Log in to enter your crop details and compare buyers and markets near you.",
+       buyer: "Log in to see live farmer listings near you and reach out directly.",
+       admin: "Log in to monitor listings, verify data sources, and moderate unreliable offers." },
+  te:{ farmer: "మీ పంట వివరాలు నమోదు చేసి, సమీపంలోని కొనుగోలుదారులు మరియు మార్కెట్లను పోల్చడానికి లాగిన్ అవ్వండి.",
+       buyer: "సమీపంలోని రైతుల లిస్టింగ్‌లను చూసి నేరుగా సంప్రదించడానికి లాగిన్ అవ్వండి.",
+       admin: "లిస్టింగ్‌లను పర్యవేక్షించడానికి, డేటా మూలాలను ధృవీకరించడానికి లాగిన్ అవ్వండి." },
+  hi:{ farmer: "अपनी फ़सल का विवरण दर्ज करें और आस-पास के खरीदारों व बाज़ारों की तुलना करने के लिए लॉग इन करें।",
+       buyer: "आस-पास के किसानों की लिस्टिंग देखने और सीधे संपर्क करने के लिए लॉग इन करें।",
+       admin: "लिस्टिंग की निगरानी करने और डेटा स्रोतों को सत्यापित करने के लिए लॉग इन करें।" }
+};
+const ROLE_ID_LABEL = {
+  en:{ farmer: "Mobile number", buyer: "Business / mobile number", admin: "Admin ID" },
+  te:{ farmer: "మొబైల్ నంబర్", buyer: "వ్యాపార / మొబైల్ నంబర్", admin: "అడ్మిన్ ఐడి" },
+  hi:{ farmer: "मोबाइल नंबर", buyer: "व्यवसाय / मोबाइल नंबर", admin: "एडमिन आईडी" }
+};
+
+const I18N = {
+  en:{
+    loginSub:"Market linkage & price discovery", roleFarmer:"Farmer", roleBuyer:"Buyer", roleAdmin:"Administrator",
+    fullName:"Full name", mobileNumber:"Mobile number", password:"Password", logIn:"Log in",
+    prototypeNote:"Prototype login — any details will work. No real accounts are created.",
+    logOut:"Log out",
+    heroLine:"Not \"who pays the most\" — but \"where do I actually take home more.\"",
+    heroSub:"Enter your crop once. We compare mandis, FPOs and buyers near you — price, transport and fees included — so you can pick with confidence.",
+    marketPricesToday:"📊 Today's market prices", lastUpdated2h:"Last updated: 2 hours ago",
+    priceSourceNote:"Sample prices for this demo. In production this connects to government/mandi (eNAM / Agmarknet) live price feeds.",
+    tellUsWhat:"Tell us what you're selling",
+    voiceHint:"Tap the mic and say something like \"500 kg tomatoes\" — we'll fill the form for you.",
+    crop:"Crop", cropTomato:"Tomato", cropOnion:"Onion", cropSoybean:"Soybean", cropCotton:"Cotton", cropWheat:"Wheat",
+    quantity:"Quantity", yourLocation:"Your location", cropQuality:"Crop quality",
+    gradeA:"Grade A", gradeB:"Grade B", gradeC:"Grade C",
+    findBestBuyers:"Find best buyers", findHint:"Takes a few seconds — we check 6 nearby options",
+    fpoTitle:"Selling through an FPO?",
+    fpoBody:"Farmer Producer Organisations pool produce from many farmers to negotiate better prices, cut transport cost per farmer, and reach bulk buyers directly.",
+    fpoYou:"👨‍🌾 You", fpoFpo:"🏢 FPO / Cooperative", fpoBuyer:"🏪 Bulk Buyer",
+    resultsSub:"Ordered by what you'll actually receive after transport and selling costs — not just the listed price.",
+    sortNote:"Sorted: highest net return first",
+    priceTrend:"Price trend — last 7 days", today:"Today",
+    marketInsight:"📊 Market insight", currentPrice:"Current price", sevenDayTrend:"7-day trend", nearbyDemand:"Nearby demand",
+    estimateFlag:"These are estimates based on sample data, not a guarantee of future price.",
+    howWeCalc:"How we calculate this",
+    howWeCalcBody:"Net return = (price per kg × quantity) − transport cost − market/commission fee − handling cost. Transport is estimated from distance; you can confirm exact fare with the buyer before dispatch. Prices shown carry a source and last-updated time — verify before finalising a sale.",
+    footerText:"Prototype for SIH26132 — Strengthening Market Linkages and Price Discovery for Farmers · Sample data only, for demonstration",
+    trendIncreasing:"Increasing", trendDecreasing:"Decreasing", trendFlat:"Stable",
+    demandHigh:"High", demandMedium:"Medium", demandLow:"Low",
+    goodTimeToSell:"🟢 Good time to sell", considerWaiting:"🟠 Consider waiting 1–2 days",
+    whyIncreasing:"Prices have been rising and demand nearby is strong.",
+    whyDecreasing:"Prices are trending down — selling soon may lock in a better rate.",
+    whyFlat:"Prices are steady; timing won't change your return much."
+  },
+  te:{
+    loginSub:"మార్కెట్ అనుసంధానం & ధర నిర్ధారణ", roleFarmer:"రైతు", roleBuyer:"కొనుగోలుదారు", roleAdmin:"అడ్మినిస్ట్రేటర్",
+    fullName:"పూర్తి పేరు", mobileNumber:"మొబైల్ నంబర్", password:"పాస్‌వర్డ్", logIn:"లాగిన్",
+    prototypeNote:"ప్రోటోటైప్ లాగిన్ — ఏ వివరాలైనా పనిచేస్తాయి. నిజమైన ఖాతాలు సృష్టించబడవు.",
+    logOut:"లాగ్ అవుట్",
+    heroLine:"\"ఎవరు ఎక్కువ ఇస్తారు\" కాదు — \"నాకు నిజంగా ఎక్కువ ఎక్కడ మిగులుతుంది.\"",
+    heroSub:"మీ పంట వివరాలను ఒకసారి నమోదు చేయండి. ధర, రవాణా మరియు రుసుములతో సహా సమీపంలోని మండీలు, FPOలు మరియు కొనుగోలుదారులను పోల్చుతాము.",
+    marketPricesToday:"📊 నేటి మార్కెట్ ధరలు", lastUpdated2h:"చివరిగా నవీకరించబడింది: 2 గంటల క్రితం",
+    priceSourceNote:"ఇది డెమో కోసం నమూనా ధరలు. ప్రొడక్షన్‌లో ఇది ప్రభుత్వ/మండీ (eNAM / Agmarknet) లైవ్ ధర ఫీడ్‌లకు అనుసంధానించబడుతుంది.",
+    tellUsWhat:"మీరు అమ్మేది చెప్పండి",
+    voiceHint:"మైక్ నొక్కి \"500 కిలోల టమాటాలు\" అని చెప్పండి — మేము ఫారమ్‌ను నింపుతాము.",
+    crop:"పంట", cropTomato:"టమాటా", cropOnion:"ఉల్లిపాయ", cropSoybean:"సోయాబీన్", cropCotton:"పత్తి", cropWheat:"గోధుమ",
+    quantity:"పరిమాణం", yourLocation:"మీ ప్రాంతం", cropQuality:"పంట నాణ్యత",
+    gradeA:"గ్రేడ్ A", gradeB:"గ్రేడ్ B", gradeC:"గ్రేడ్ C",
+    findBestBuyers:"ఉత్తమ కొనుగోలుదారుని కనుగొనండి", findHint:"కొన్ని సెకన్లు పడుతుంది — మేము 6 సమీప ఎంపికలను తనిఖీ చేస్తాము",
+    fpoTitle:"FPO ద్వారా అమ్ముతున్నారా?",
+    fpoBody:"రైతు ఉత్పత్తిదారుల సంస్థలు (FPO) చాలామంది రైతుల ఉత్పత్తులను కలిపి మెరుగైన ధరల కోసం చర్చించి, రవాణా ఖర్చును తగ్గించి, పెద్ద కొనుగోలుదారులను నేరుగా చేరుకుంటాయి.",
+    fpoYou:"👨‍🌾 మీరు", fpoFpo:"🏢 FPO / సహకార సంఘం", fpoBuyer:"🏪 బల్క్ కొనుగోలుదారు",
+    resultsSub:"రవాణా మరియు అమ్మకపు ఖర్చుల తర్వాత మీకు నిజంగా అందేదాని ఆధారంగా క్రమబద్ధీకరించబడింది — కేవలం జాబితా ధర కాదు.",
+    sortNote:"క్రమం: అత్యధిక నికర రాబడి మొదట",
+    priceTrend:"ధర ధోరణి — గత 7 రోజులు", today:"ఈరోజు",
+    marketInsight:"📊 మార్కెట్ అంతర్దృష్టి", currentPrice:"ప్రస్తుత ధర", sevenDayTrend:"7-రోజుల ధోరణి", nearbyDemand:"సమీప డిమాండ్",
+    estimateFlag:"ఇవి నమూనా డేటా ఆధారంగా అంచనాలు, భవిష్యత్ ధరకు హామీ కాదు.",
+    howWeCalc:"మేము దీన్ని ఎలా లెక్కిస్తాము",
+    howWeCalcBody:"నికర రాబడి = (కిలోకు ధర × పరిమాణం) − రవాణా ఖర్చు − మార్కెట్/కమిషన్ రుసుము − హ్యాండ్లింగ్ ఖర్చు. రవాణా దూరం ఆధారంగా అంచనా వేయబడింది; పంపే ముందు కొనుగోలుదారుతో ఖచ్చితమైన ధరను నిర్ధారించుకోండి.",
+    footerText:"SIH26132 కోసం ప్రోటోటైప్ — రైతులకు మార్కెట్ అనుసంధానం మరియు ధర నిర్ధారణను బలోపేతం చేయడం · కేవలం నమూనా డేటా, ప్రదర్శన కోసం మాత్రమే",
+    trendIncreasing:"పెరుగుతోంది", trendDecreasing:"తగ్గుతోంది", trendFlat:"స్థిరంగా",
+    demandHigh:"అధికం", demandMedium:"మధ్యస్థం", demandLow:"తక్కువ",
+    goodTimeToSell:"🟢 అమ్మడానికి మంచి సమయం", considerWaiting:"🟠 1–2 రోజులు వేచి ఉండండి",
+    whyIncreasing:"ధరలు పెరుగుతున్నాయి మరియు సమీపంలో డిమాండ్ బలంగా ఉంది.",
+    whyDecreasing:"ధరలు తగ్గుతున్నాయి — త్వరగా అమ్మితే మంచి రేటు లభించవచ్చు.",
+    whyFlat:"ధరలు స్థిరంగా ఉన్నాయి; సమయం మీ రాబడిని పెద్దగా మార్చదు."
+  },
+  hi:{
+    loginSub:"बाज़ार संपर्क और मूल्य खोज", roleFarmer:"किसान", roleBuyer:"खरीदार", roleAdmin:"प्रशासक",
+    fullName:"पूरा नाम", mobileNumber:"मोबाइल नंबर", password:"पासवर्ड", logIn:"लॉग इन",
+    prototypeNote:"प्रोटोटाइप लॉगिन — कोई भी विवरण काम करेगा। कोई वास्तविक खाता नहीं बनाया जाता।",
+    logOut:"लॉग आउट",
+    heroLine:"\"सबसे ज़्यादा कौन देता है\" नहीं — बल्कि \"मुझे असल में सबसे ज़्यादा कहाँ मिलेगा।\"",
+    heroSub:"अपनी फ़सल की जानकारी एक बार दर्ज करें। हम आपके आस-पास की मंडियों, FPO और खरीदारों की तुलना दाम, परिवहन और शुल्क सहित करते हैं।",
+    marketPricesToday:"📊 आज के मंडी भाव", lastUpdated2h:"आख़िरी अपडेट: 2 घंटे पहले",
+    priceSourceNote:"ये डेमो के लिए नमूना दाम हैं। उत्पादन में यह सरकारी/मंडी (eNAM / Agmarknet) लाइव मूल्य फ़ीड से जुड़ेगा।",
+    tellUsWhat:"आप क्या बेच रहे हैं बताइए",
+    voiceHint:"माइक दबाकर बोलें, जैसे \"500 किलो टमाटर\" — हम फ़ॉर्म भर देंगे।",
+    crop:"फ़सल", cropTomato:"टमाटर", cropOnion:"प्याज़", cropSoybean:"सोयाबीन", cropCotton:"कपास", cropWheat:"गेहूं",
+    quantity:"मात्रा", yourLocation:"आपका स्थान", cropQuality:"फ़सल की गुणवत्ता",
+    gradeA:"ग्रेड A", gradeB:"ग्रेड B", gradeC:"ग्रेड C",
+    findBestBuyers:"सबसे अच्छा खरीदार खोजें", findHint:"कुछ सेकंड लगेंगे — हम 6 नज़दीकी विकल्प जांचते हैं",
+    fpoTitle:"FPO के ज़रिए बेच रहे हैं?",
+    fpoBody:"किसान उत्पादक संगठन (FPO) कई किसानों की उपज इकट्ठा कर बेहतर दाम तय करते हैं, प्रति किसान परिवहन लागत घटाते हैं, और सीधे थोक खरीदारों तक पहुँचाते हैं।",
+    fpoYou:"👨‍🌾 आप", fpoFpo:"🏢 FPO / सहकारी समिति", fpoBuyer:"🏪 थोक खरीदार",
+    resultsSub:"परिवहन और बिक्री लागत के बाद आपको असल में जो मिलेगा, उसके अनुसार क्रमबद्ध — केवल सूचीबद्ध दाम नहीं।",
+    sortNote:"क्रम: सबसे अधिक शुद्ध लाभ पहले",
+    priceTrend:"मूल्य रुझान — पिछले 7 दिन", today:"आज",
+    marketInsight:"📊 बाज़ार जानकारी", currentPrice:"वर्तमान दाम", sevenDayTrend:"7-दिन का रुझान", nearbyDemand:"नज़दीकी मांग",
+    estimateFlag:"ये नमूना डेटा पर आधारित अनुमान हैं, भविष्य के दाम की गारंटी नहीं।",
+    howWeCalc:"हम इसकी गणना कैसे करते हैं",
+    howWeCalcBody:"शुद्ध लाभ = (प्रति किलो दाम × मात्रा) − परिवहन लागत − मंडी/कमीशन शुल्क − हैंडलिंग लागत। परिवहन दूरी के आधार पर अनुमानित है; भेजने से पहले खरीदार से सही किराया पक्का करें।",
+    footerText:"SIH26132 के लिए प्रोटोटाइप — किसानों के लिए बाज़ार संपर्क और मूल्य खोज को मज़बूत करना · केवल प्रदर्शन हेतु नमूना डेटा",
+    trendIncreasing:"बढ़ रहा है", trendDecreasing:"घट रहा है", trendFlat:"स्थिर",
+    demandHigh:"उच्च", demandMedium:"मध्यम", demandLow:"कम",
+    goodTimeToSell:"🟢 बेचने का अच्छा समय", considerWaiting:"🟠 1–2 दिन रुकने पर विचार करें",
+    whyIncreasing:"दाम बढ़ रहे हैं और आस-पास मांग मज़बूत है।",
+    whyDecreasing:"दाम घट रहे हैं — जल्द बेचने से बेहतर दर मिल सकती है।",
+    whyFlat:"दाम स्थिर हैं; समय से आपके लाभ में ज़्यादा फ़र्क़ नहीं पड़ेगा।"
+  }
+};
+
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.lang-switch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(I18N[lang][key] !== undefined) el.innerHTML = I18N[lang][key];
+  });
+  document.getElementById('roleDesc').textContent = ROLE_DESC[lang][selectedRole];
+  document.getElementById('lblLoginId').textContent = ROLE_ID_LABEL[lang][selectedRole];
+  if(document.getElementById('results') && document.getElementById('results').classList.contains('show')){
+    renderTrend();
+  }
+  if(document.getElementById('priceGrid')) renderPriceGrid();
+}
+
+function selectRole(role){
+  selectedRole = role;
+  document.querySelectorAll('.role-tabs button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.role === role);
+  });
+  document.getElementById('roleDesc').textContent = ROLE_DESC[currentLang][role];
+  document.getElementById('lblLoginId').textContent = ROLE_ID_LABEL[currentLang][role];
+  const idInput = document.getElementById('loginId');
+  idInput.placeholder = role === 'admin' ? 'Admin ID' : '10-digit mobile number';
+  hideLoginError();
+  filterLoginId(idInput);
+}
+
+function filterLoginId(input){
+  // Farmers and buyers log in with a phone number: digits only, capped at 10.
+  if(selectedRole !== 'admin'){
+    input.value = input.value.replace(/\D/g,'').slice(0,10);
+  }
+}
+
+function showLoginError(msg){
+  const el = document.getElementById('loginError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function hideLoginError(){
+  document.getElementById('loginError').style.display = 'none';
+}
+
+// ---------------- REAL AUTH (backend-backed) ----------------
+let authToken = null;
+let currentUser = null;
+let isRegisterMode = false;
+
+function toggleAuthMode(e){
+  if(e) e.preventDefault();
+  isRegisterMode = !isRegisterMode;
+  hideLoginError();
+  const btn = document.getElementById('loginSubmitBtn');
+  const note = document.getElementById('authToggleNote');
+  if(isRegisterMode){
+    btn.textContent = 'Create account';
+    note.innerHTML = 'Already have an account? <a href="#" onclick="toggleAuthMode(event)" style="color:var(--leaf); font-weight:700;">Log in</a> instead.';
+  } else {
+    btn.textContent = I18N[currentLang].logIn || 'Log in';
+    note.innerHTML = 'New here? <a href="#" onclick="toggleAuthMode(event)" style="color:var(--leaf); font-weight:700;">Create an account</a> instead.';
+  }
+}
+
+async function submitAuthForm(){
+  const name = document.getElementById('loginName').value.trim();
+  const id = document.getElementById('loginId').value.trim();
+  const pass = document.getElementById('loginPass').value;
+
+  if(isRegisterMode && !name){
+    showLoginError('Please enter your full name.'); return;
+  }
+  if(selectedRole !== 'admin' && !/^\d{10}$/.test(id)){
+    showLoginError('Please enter a valid 10-digit mobile number.'); return;
+  }
+  if(selectedRole === 'admin' && !id){
+    showLoginError('Please enter your Admin ID.'); return;
+  }
+  if(!pass || (isRegisterMode && pass.length < 6)){
+    showLoginError(isRegisterMode ? 'Password must be at least 6 characters.' : 'Please enter your password.');
+    return;
+  }
+  hideLoginError();
+
+  const endpoint = isRegisterMode ? '/api/register' : '/api/login';
+  const body = isRegisterMode
+    ? { name, mobile: id, password: pass, role: selectedRole }
+    : { mobile: id, password: pass, role: selectedRole };
+
+  try{
+    const resp = await fetch(endpoint, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+    if(!resp.ok){
+      showLoginError(data.error || 'Something went wrong. Please try again.');
+      return;
+    }
+    authToken = data.token;
+    currentUser = data.user;
+    localStorage.setItem('kisanlink_token', authToken);
+    localStorage.setItem('kisanlink_user', JSON.stringify(currentUser));
+    enterApp(currentUser);
+  } catch(err){
+    showLoginError('Could not reach the server. Is the backend running?');
+  }
+}
+
+// Attach the saved token to every backend call, and force logout if the
+// session has expired (backend replies 401).
+async function authedFetch(url, options={}){
+  const headers = Object.assign({}, options.headers, {
+    'Authorization': 'Bearer ' + authToken,
+    'Content-Type':'application/json'
+  });
+  const resp = await fetch(url, Object.assign({}, options, { headers }));
+  if(resp.status === 401){
+    showToast('Your session expired for security. Please log in again.');
+    logout();
+    throw new Error('Session expired');
+  }
+  return resp;
+}
+
+function enterApp(user){
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('farmerView').classList.add('hidden');
+  document.getElementById('buyerView').classList.add('hidden');
+  document.getElementById('adminView').classList.add('hidden');
+
+  if(user.role === 'farmer'){
+    document.getElementById('farmerView').classList.remove('hidden');
+    document.getElementById('farmerGreeting').textContent = user.name;
+    renderPriceGrid();
+    runSearch(true);
+  } else if(user.role === 'buyer'){
+    document.getElementById('buyerView').classList.remove('hidden');
+    document.getElementById('buyerGreeting').textContent = user.name;
+    renderBuyerListings();
+  } else {
+    document.getElementById('adminView').classList.remove('hidden');
+    document.getElementById('adminGreeting').textContent = user.name;
+    renderAdminTable();
+  }
+  window.scrollTo(0,0);
+}
+
+function logout(){
+  authToken = null;
+  currentUser = null;
+  localStorage.removeItem('kisanlink_token');
+  localStorage.removeItem('kisanlink_user');
+  document.getElementById('farmerView').classList.add('hidden');
+  document.getElementById('buyerView').classList.add('hidden');
+  document.getElementById('adminView').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginName').value = '';
+  document.getElementById('loginId').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+// Resume a session on page refresh if a valid token is saved.
+(async function resumeSession(){
+  const savedToken = localStorage.getItem('kisanlink_token');
+  const savedUser = localStorage.getItem('kisanlink_user');
+  if(!savedToken || !savedUser) return;
+  authToken = savedToken;
+  try{
+    const resp = await fetch('/api/me', { headers:{ 'Authorization':'Bearer ' + savedToken } });
+    if(resp.ok){
+      currentUser = JSON.parse(savedUser);
+      enterApp(currentUser);
+    } else {
+      localStorage.removeItem('kisanlink_token');
+      localStorage.removeItem('kisanlink_user');
+    }
+  } catch(err){ /* backend not reachable yet — stay on login screen */ }
+})();
+
+
+function pickQuality(q){
+  quality = q;
+  document.querySelectorAll('.quality-pills button').forEach(b=>{
+    b.classList.toggle('sel', b.dataset.q === q);
+  });
+}
+
+// ---------------- FARMER: pricing engine ----------------
+const CROP_DATA = {
+  tomato:  { label:"Tomato", icon:"🍅", base:18, trend:[14,15,15,17,16,18,18] },
+  onion:   { label:"Onion", icon:"🧅", base:14, trend:[16,15,15,14,14,13,14] },
+  soybean: { label:"Soybean", icon:"🌱", base:44, trend:[41,42,43,43,44,44,44] },
+  cotton:  { label:"Cotton", icon:"🌾", base:62, trend:[58,59,60,61,61,62,62] },
+  wheat:   { label:"Wheat", icon:"🌿", base:24, trend:[25,25,24,24,24,24,24] },
+};
+const QUALITY_MULT = { A: 1.0, B: 0.88, C: 0.74 };
+
+const BUYER_TEMPLATES = [
+  { name:"Warangal APMC Market",        type:"mandi",   distBase:12, priceMult:1.00, commission:0.06, fresh:"Updated 40 min ago", verified:true,  rating:4.6, deals:212 },
+  { name:"Sahyadri Farmers FPO",      type:"fpo",      distBase:22, priceMult:1.05, commission:0.03, fresh:"Updated 2 hr ago", verified:true,  rating:4.8, deals:340 },
+  { name:"Green Harvest Traders",     type:"private",  distBase:8,  priceMult:0.94, commission:0.02, fresh:"Updated 1 hr ago", verified:true,  rating:4.1, deals:76 },
+  { name:"Lasalgaon Wholesale Mandi", type:"mandi",    distBase:35, priceMult:1.10, commission:0.06, fresh:"Updated 3 hr ago", verified:true,  rating:4.4, deals:501 },
+  { name:"Krishi Setu Cooperative",   type:"fpo",      distBase:18, priceMult:1.02, commission:0.025,fresh:"Updated 5 hr ago", verified:true,  rating:4.7, deals:158 },
+  { name:"Om Sai Agro Buyers",        type:"private",  distBase:15, priceMult:0.97, commission:0.02, fresh:"Updated 55 min ago", verified:false, rating:3.6, deals:9 },
+];
+const LOCATION_SPREAD = { warangal:1, karimnagar:1.3, nalgonda:1.6, khammam:1.1, adilabad:1.4 };
+
+function computeResults(cropKey, qtyKg, locKey, qualKey){
+  const crop = CROP_DATA[cropKey];
+  const spread = LOCATION_SPREAD[locKey] || 1;
+  const qMult = QUALITY_MULT[qualKey];
+  return BUYER_TEMPLATES.map((b) => {
+    const pricePerKg = Math.round(crop.base * b.priceMult * qMult * 100) / 100;
+    const distanceKm = Math.round(b.distBase * spread);
+    const gross = pricePerKg * qtyKg;
+    const transportCost = Math.round(distanceKm * 2.1 * (qtyKg/100));
+    const fee = Math.round(gross * b.commission);
+    const handling = Math.round(40 + qtyKg * 0.06);
+    const net = Math.round(gross - transportCost - fee - handling);
+    return { ...b, pricePerKg, distanceKm, gross, transportCost, fee, handling, net };
+  }).sort((a,b) => b.net - a.net);
+}
+
+function fmtINR(n){ return '₹' + n.toLocaleString('en-IN'); }
+
+function runSearch(silent){
+  const cropKey = document.getElementById('crop').value;
+  let qty = parseFloat(document.getElementById('qty').value) || 0;
+  const unit = document.getElementById('qtyUnit').value;
+  const qtyKg = unit === 'quintal' ? qty * 100 : qty;
+  const locKey = document.getElementById('location').value;
+
+  const results = computeResults(cropKey, qtyKg, locKey, quality);
+  const cropLabel = CROP_DATA[cropKey].label;
+
+  document.getElementById('resTitle').textContent = `Ranked for your ${qty} ${unit} of ${cropLabel}`;
+
+  const list = document.getElementById('cardList');
+  list.innerHTML = '';
+  results.forEach((r, idx) => {
+    const isBest = idx === 0;
+    const card = document.createElement('div');
+    card.className = 'card' + (isBest ? ' best' : '');
+    card.innerHTML = `
+      ${isBest ? `<div class="best-tag">🏆 Best return</div>` : ''}
+      <div class="card-top">
+        <div>
+          <div class="buyer-name">${r.name} ${r.verified ? `<span class="verified-badge">🟢 Verified</span>` : `<span class="unverified-badge">Unverified</span>`}</div>
+          <div class="buyer-meta">
+            <span class="type-tag type-${r.type}">${r.type === 'mandi' ? 'APMC Mandi' : r.type === 'fpo' ? 'FPO / Cooperative' : 'Private Buyer'}</span>
+            <span>${r.distanceKm} km away</span>
+            <span class="rating">⭐ ${r.rating.toFixed(1)} · ${r.deals} deals</span>
+          </div>
+        </div>
+        <div class="net-block">
+          <div class="net-label">You take home</div>
+          <div class="net-value">${fmtINR(r.net)}</div>
+        </div>
+      </div>
+      <div class="route-mini">📍 You<span class="rline"></span>${r.distanceKm} km<span class="rline"></span>${r.type === 'fpo' ? '🏢' : r.type === 'mandi' ? '🏪' : '🏬'} ${r.name}</div>
+      <div class="breakdown">
+        <div class="bd-item"><div class="bd-label">Price offered</div><div class="bd-value">₹${r.pricePerKg}/kg</div></div>
+        <div class="bd-item"><div class="bd-label">Transport cost</div><div class="bd-value minus">−${fmtINR(r.transportCost)}</div></div>
+        <div class="bd-item"><div class="bd-label">Market fee</div><div class="bd-value minus">−${fmtINR(r.fee)}</div></div>
+        <div class="bd-item"><div class="bd-label">Handling</div><div class="bd-value minus">−${fmtINR(r.handling)}</div></div>
+      </div>
+      <div class="card-foot">
+        <div class="freshness"><span class="dot"></span>${r.fresh}</div>
+        <button class="btn-contact" onclick="startDeal('${r.name.replace(/'/g,"\\'")}')">Send offer</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  document.getElementById('results').classList.add('show');
+  renderTrend();
+  if(!silent){
+    document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
+
+// ---------------- LIVE PRICE TICKER ----------------
+function renderPriceGrid(){
+  const grid = document.getElementById('priceGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  Object.entries(CROP_DATA).forEach(([key, c])=>{
+    const chip = document.createElement('div');
+    chip.className = 'price-chip';
+    const unit = key === 'wheat' || key === 'soybean' || key === 'cotton' ? '/kg' : '/kg';
+    chip.innerHTML = `<div class="pc-icon">${c.icon}</div><div class="pc-price">₹${c.trend[6]}${unit}</div><div class="pc-label">${c.label}</div>`;
+    grid.appendChild(chip);
+  });
+}
+
+// ---------------- PRICE TREND + SELL/WAIT RECOMMENDATION ----------------
+function renderTrend(){
+  const sparkEl = document.getElementById('sparkline');
+  if(!sparkEl) return;
+  const cropKey = document.getElementById('crop').value;
+  const crop = CROP_DATA[cropKey];
+  const trend = crop.trend;
+  const max = Math.max(...trend);
+  sparkEl.innerHTML = trend.map(v => `<div style="height:${Math.max(12, (v/max)*100)}%;"></div>`).join('');
+
+  const first = trend[0], last = trend[6];
+  const pctChange = ((last-first)/first)*100;
+  let direction = 'trendFlat', demandLevel = 'demandMedium', recKey = 'goodTimeToSell', recClass='rec-go', whyKey='whyFlat';
+  if(pctChange > 4){ direction='trendIncreasing'; demandLevel='demandHigh'; recKey='goodTimeToSell'; recClass='rec-go'; whyKey='whyIncreasing'; }
+  else if(pctChange < -4){ direction='trendDecreasing'; demandLevel='demandLow'; recKey='considerWaiting'; recClass='rec-wait'; whyKey='whyDecreasing'; }
+
+  document.getElementById('trendCaption').textContent = trend.map(v=>'₹'+v).join(' → ');
+  document.getElementById('insightPrice').textContent = '₹' + last + '/kg';
+  document.getElementById('insightTrend').textContent = I18N[currentLang][direction];
+  document.getElementById('insightDemand').textContent = I18N[currentLang][demandLevel];
+  document.getElementById('recPill').innerHTML = `<span class="rec-pill ${recClass}">${I18N[currentLang][recKey]}</span>`;
+  document.getElementById('recWhy').textContent = I18N[currentLang][whyKey];
+}
+
+// ---------------- VOICE INPUT ----------------
+// Local-language names so voice input works when speaking Telugu/Hindi, not
+// just English. Recognition.lang controls what the mic *transcribes*; this
+// table controls what we can *match* in that transcript.
+const CROP_ALIASES = {
+  tomato:  { en:['tomato','tomatoes'],            te:['టమాటా','టమోటా','టమాటో','టమాటాలు'], hi:['टमाटर'] },
+  onion:   { en:['onion','onions'],                te:['ఉల్లిపాయ','ఉల్లి','ఉల్లిపాయలు'],  hi:['प्याज','प्याज़'] },
+  soybean: { en:['soybean','soyabean','soya'],     te:['సోయాబీన్'],                       hi:['सोयाबीन'] },
+  cotton:  { en:['cotton'],                        te:['పత్తి'],                          hi:['कपास'] },
+  wheat:   { en:['wheat'],                         te:['గోధుమ','గోధుమలు'],                hi:['गेहूं','गेहूँ'] }
+};
+const UNIT_ALIASES = {
+  quintal: { en:['quintal','quintals','qtl'], te:['క్వింటాల్','క్వింటాళ్ళు'], hi:['क्विंटल'] },
+  kg:      { en:['kg','kgs','kilo','kilos','kilogram','kilograms'], te:['కిలో','కిలోలు','కేజీ'], hi:['किलो','किलोग्राम','केजी'] }
+};
+
+function startVoiceInput(){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micBtn = document.getElementById('micBtn');
+  if(!SpeechRecognition){
+    showToast("Voice input isn't supported in this browser. Try Chrome on Android.");
+    return;
+  }
+  const recognition = new SpeechRecognition();
+  recognition.lang = currentLang === 'hi' ? 'hi-IN' : currentLang === 'te' ? 'te-IN' : 'en-IN';
+  recognition.onstart = () => micBtn.classList.add('listening');
+  recognition.onend = () => micBtn.classList.remove('listening');
+  recognition.onerror = () => { micBtn.classList.remove('listening'); showToast('Could not hear that clearly. Please try again.'); };
+  recognition.onresult = (event) => {
+    const rawText = event.results[0][0].transcript;
+    const text = rawText.toLowerCase();
+
+    // Match crop against the current language's words first, then fall back
+    // to English (people often mix in the English crop name either way).
+    let matchedCrop = null;
+    Object.entries(CROP_ALIASES).forEach(([key, names])=>{
+      const wordsToCheck = [...(names[currentLang] || []), ...names.en];
+      if(wordsToCheck.some(w => text.includes(w.toLowerCase()))) matchedCrop = key;
+    });
+
+    // Grab the first number in the transcript — most speech engines,
+    // including te-IN/hi-IN, render spoken numbers as digits.
+    const qtyMatch = text.match(/(\d+(\.\d+)?)/);
+
+    let unit = 'kg';
+    const quintalWords = [...(UNIT_ALIASES.quintal[currentLang] || []), ...UNIT_ALIASES.quintal.en];
+    if(quintalWords.some(w => text.includes(w.toLowerCase()))) unit = 'quintal';
+
+    if(matchedCrop) document.getElementById('crop').value = matchedCrop;
+    if(qtyMatch){
+      document.getElementById('qty').value = qtyMatch[1];
+      document.getElementById('qtyUnit').value = unit;
+    }
+    renderTrend();
+
+    if(!matchedCrop && !qtyMatch){
+      showToast(`Heard: "${rawText}" — couldn't identify a crop or quantity. Please select manually.`);
+    } else {
+      showToast(`Heard: "${rawText}" — form updated.`);
+    }
+  };
+  recognition.start();
+}
+
+// ---------------- TRANSACTION FLOW MODAL ----------------
+const DEAL_STAGES = ["Offer sent", "Buyer accepts", "Deal confirmed", "Dispatch", "Delivery", "Payment", "Rate buyer"];
+const DEAL_DESC = [
+  "Your offer has been sent to the buyer with your price, quantity and quality grade.",
+  "The buyer has reviewed and accepted your offer.",
+  "Both sides have confirmed the deal terms — price, quantity and pickup details.",
+  "Produce has been dispatched from your location toward the buyer.",
+  "The buyer has received and inspected the delivery.",
+  "Payment has been released to your account.",
+  "Deal complete! Please rate the buyer to help other farmers."
+];
+let dealStage = 0;
+let dealBuyer = '';
+
+function startDeal(name){
+  dealBuyer = name;
+  dealStage = 0;
+  document.getElementById('dealBuyerName').textContent = `Deal with ${name}`;
+  renderDealModal();
+  document.getElementById('dealModal').classList.add('show');
+}
+
+function renderDealModal(){
+  const stepsEl = document.getElementById('dealSteps');
+  stepsEl.innerHTML = DEAL_STAGES.map((s,i)=>{
+    const cls = i < dealStage ? 'done' : i === dealStage ? 'current' : '';
+    return `<span class="deal-step ${cls}">${i+1}. ${s}</span>`;
+  }).join('');
+  document.getElementById('dealStatus').textContent = DEAL_STAGES[dealStage];
+  document.getElementById('dealDesc').textContent = DEAL_DESC[dealStage];
+  const nextBtn = document.getElementById('dealNextBtn');
+  if(dealStage >= DEAL_STAGES.length - 1){
+    nextBtn.textContent = 'Finish';
+  } else {
+    nextBtn.textContent = 'Mark next step';
+  }
+}
+
+function advanceDeal(){
+  if(dealStage >= DEAL_STAGES.length - 1){
+    closeDealModal();
+    showToast(`Deal with ${dealBuyer} complete. Thanks for using KisanLink!`);
+    return;
+  }
+  dealStage++;
+  renderDealModal();
+}
+
+function closeDealModal(){
+  document.getElementById('dealModal').classList.remove('show');
+}
+
+// ---------------- BUYER: listings feed ----------------
+const FARMER_LISTINGS = [
+  { crop:"Tomato", icon:"🍅", farmer:"Ramesh Patil", village:"Narsampet, Warangal", qty:"600 kg", ask:"₹19/kg", updated:"20 min ago" },
+  { crop:"Onion", icon:"🧅", farmer:"Sunita Jadhav", village:"ReddyPalem, Warangal", qty:"1.2 quintal", ask:"₹15/kg", updated:"1 hr ago" },
+  { crop:"Soybean", icon:"🌱", farmer:"Vikas More", village:"Kopargaon, Khammam", qty:"800 kg", ask:"₹45/kg", updated:"2 hr ago" },
+  { crop:"Cotton", icon:"🌾", farmer:"Anita Deshmukh", village:"KilaWarangal, Warangal", qty:"3 quintal", ask:"₹63/kg", updated:"3 hr ago" },
+  { crop:"Wheat", icon:"🌿", farmer:"Prakash Salunkhe", village:"Baramati, Karimnagar", qty:"5 quintal", ask:"₹25/kg", updated:"4 hr ago" },
+];
+
+function renderBuyerListings(){
+  const el = document.getElementById('buyerListings');
+  el.innerHTML = '';
+  FARMER_LISTINGS.forEach(l => {
+    const row = document.createElement('div');
+    row.className = 'listing-row';
+    row.innerHTML = `
+      <div class="listing-left">
+        <div class="crop-badge">${l.icon}</div>
+        <div>
+          <div class="listing-title">${l.crop} · ${l.qty}</div>
+          <div class="listing-meta">${l.farmer} · ${l.village} · Updated ${l.updated}</div>
+        </div>
+      </div>
+      <div class="listing-right">
+        <div class="price-ask">${l.ask}</div>
+        <button class="btn-small" onclick="showToast('Request sent to ${l.farmer.replace(/'/g,"\\'")}. They will be notified.')">Contact farmer</button>
+      </div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+// ---------------- ADMIN: moderation table (backend-backed) ----------------
+function timeAgo(iso){
+  const diffMs = Date.now() - new Date(iso).getTime();
+  const mins = Math.round(diffMs / 60000);
+  if(mins < 60) return `${mins} min ago`;
+  const hrs = Math.round(mins / 60);
+  if(hrs < 24) return `${hrs} hr ago`;
+  return `${Math.round(hrs/24)} day(s) ago`;
+}
+
+async function renderAdminTable(){
+  const body = document.getElementById('adminTableBody');
+  body.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--ink-soft);">Loading listings…</td></tr>`;
+  let listings = [];
+  try{
+    const resp = await authedFetch('/api/listings');
+    const data = await resp.json();
+    listings = data.listings || [];
+  } catch(err){
+    body.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--danger);">Could not load listings from the server.</td></tr>`;
+    return;
+  }
+
+  body.innerHTML = '';
+  if(listings.length === 0){
+    body.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--ink-soft);">No listings to review.</td></tr>`;
+    return;
+  }
+  listings.forEach(row => {
+    const statusHtml = row.status === 'ok'
+      ? `<span class="status-pill status-ok">Verified</span>`
+      : row.status === 'flag'
+      ? `<span class="status-pill status-flag">Needs review</span>`
+      : `<span class="status-pill status-pending">Pending</span>`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.buyer}</td>
+      <td>${row.crop}</td>
+      <td>${timeAgo(row.updated)}</td>
+      <td>${statusHtml}</td>
+      <td class="admin-actions">
+        <button onclick="approveListing(${row.id})">Approve</button>
+        <button onclick="removeListing(${row.id})">Remove</button>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+async function approveListing(id){
+  try{
+    const resp = await authedFetch(`/api/listings/${id}/approve`, { method:'POST' });
+    if(!resp.ok){ const d = await resp.json(); showToast(d.error || 'Could not approve listing.'); return; }
+    showToast('Listing approved and marked verified.');
+    renderAdminTable();
+  } catch(err){ /* logout already handled inside authedFetch on 401 */ }
+}
+
+async function removeListing(id){
+  try{
+    const resp = await authedFetch(`/api/listings/${id}/remove`, { method:'POST' });
+    if(!resp.ok){ const d = await resp.json(); showToast(d.error || 'Could not remove listing.'); return; }
+    showToast('Listing removed from the marketplace.');
+    renderAdminTable();
+  } catch(err){ /* logout already handled inside authedFetch on 401 */ }
+}
+
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 3200);
+}
+</script>
+
+</body>
+</html>
