@@ -1,5 +1,5 @@
 node_modules/
 .env
-data/users.json
-data/listings.json
+data/*.json
+!data/.gitkeep
 server.log
