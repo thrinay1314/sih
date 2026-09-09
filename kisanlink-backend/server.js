@@ -36,10 +36,9 @@ const MOBILE_RE = /^\d{10}$/;
 
 function validateRegisterInput({ name, mobile, password, role }) {
   if (!name || !name.trim()) return 'Please enter your full name.';
-  if (!['farmer', 'buyer', 'admin'].includes(role)) return 'Invalid role.';
-  if (role === 'admin') {
-    if (!mobile || !mobile.trim()) return 'Please enter an Admin ID.';
-  } else if (!MOBILE_RE.test(mobile || '')) {
+  if (role === 'admin') return 'Administrator registration is disabled. Please log in directly with your admin credentials.';
+  if (!['farmer', 'buyer'].includes(role)) return 'Invalid role.';
+  if (!MOBILE_RE.test(mobile || '')) {
     return 'Please enter a valid 10-digit mobile number.';
   }
   if (!password || password.length < 6) return 'Password must be at least 6 characters.';
@@ -483,6 +482,29 @@ app.post('/api/listings/:id/remove', requireAuth, requireRole('admin'), async (r
   res.json({ removed });
 });
 
+// Admin: Delete a user (farmer or buyer)
+app.delete('/api/admin/users/:id', requireAuth, requireRole('admin'), async (req, res) => {
+  const removed = await db.deleteUser(req.params.id);
+  if (!removed) return res.status(404).json({ error: 'User not found.' });
+  res.json({ removed });
+});
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'online',
+    uptimeSeconds: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+    records: {
+      users: db.getUsers().length,
+      buyers: db.getBuyers().length,
+      crops: db.getCrops().length,
+      deals: db.getDeals().length,
+      listings: db.getListings().length
+    }
+  });
+});
+
 // Fallback to the SPA for any other route
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -491,3 +513,4 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`KisanLink backend running at http://localhost:${PORT}`);
 });
+
