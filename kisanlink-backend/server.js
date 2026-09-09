@@ -101,6 +101,7 @@ app.post('/api/register', async (req, res) => {
       rating: 5.0,
       deals: 0,
       acceptedCrops: ['All Produce'],
+
       description: 'Registered buyer on KisanLink.'
     };
     await db.addBuyer(buyerEntry);
