@@ -13,7 +13,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ---------------- Security middleware ----------------
-app.use(helmet());                 // sets secure HTTP headers
+app.use(helmet({
+  contentSecurityPolicy: false
+}));                 // sets secure HTTP headers
 app.use(cors());                   // same-origin by default in this setup; restrict via origin option in prod
 app.use(express.json({ limit: '20kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
